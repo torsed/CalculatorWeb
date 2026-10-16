@@ -1,0 +1,7 @@
+{
+  "all": true,
+  "include": ["src/core/**/*.js", "src/state/**/*.js"],
+  "reporter": ["text", "lcov"],
+  "report-dir": "coverage",
+  "check-coverage": false
+}

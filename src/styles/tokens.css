@@ -1,0 +1,55 @@
+/* iOS-подобные токены оформления (светлая/тёмная).
+ * Порядок и значения цветов взяты из gui/themes.py.
+ */
+:root {
+  --bg: #000000;
+  --fg: #ffffff;
+  --sub: #a1a1a6;
+  --btn-num: #333333;
+  --btn-num-h: #505050;
+  --btn-num-fg: #ffffff;
+  --btn-op: #ff9f0a;
+  --btn-op-h: #ffb44a;
+  --btn-op-fg: #000000;
+  --btn-util: #808092; /* улучшенный контраст для WCAG AA */
+  --btn-util-h: #9595a5;
+  --btn-util-fg: #000000;
+  --btn-sci: #333333;
+  --btn-sci-h: #505050;
+  --btn-sci-fg: #ffffff;
+  --card: #1c1c1e;
+  --entry-bg: #1c1c1e;
+  --entry-fg: #ffffff;
+  --entry-border: #38383a;
+  --err: #ff453a;
+  --grid: #38383a;
+  --accent: #0a84ff;
+  --radius: 14px;
+  --radius-sm: 10px;
+}
+
+:root[data-theme='light'] {
+  --bg: #f5f5f7;
+  --fg: #1c1c1e;
+  --sub: #6e6e73;
+  --btn-num: #ffffff;
+  --btn-num-h: #e5e5ea;
+  --btn-num-fg: #1c1c1e;
+  --btn-op: #ff9500;
+  --btn-op-h: #ffae42;
+  /* WCAG AA: белый текст на #ff9500 давал 2.2:1, чёрный даёт 9.6:1. */
+  --btn-op-fg: #000000;
+  --btn-util: #8a8a99; /* улучшенный контраст для WCAG AA (light) */
+  --btn-util-h: #a8a8b3;
+  --btn-util-fg: #1c1c1e;
+  --btn-sci: #ffffff;
+  --btn-sci-h: #e5e5ea;
+  --btn-sci-fg: #1c1c1e;
+  --card: #ffffff;
+  --entry-bg: #ffffff;
+  --entry-fg: #1c1c1e;
+  --entry-border: #d1d1d6;
+  /* WCAG AA: #ff3b30 на белом давал 3.6:1, #d70015 даёт 5.4:1. */
+  --err: #d70015;
+  --grid: #d1d1d6;
+}

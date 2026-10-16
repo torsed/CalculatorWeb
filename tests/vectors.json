@@ -1,0 +1,2090 @@
+[
+  {
+    "expr": "1+1",
+    "deg": true,
+    "result": "2",
+    "error": null
+  },
+  {
+    "expr": "1+1",
+    "deg": false,
+    "result": "2",
+    "error": null
+  },
+  {
+    "expr": "2*3",
+    "deg": true,
+    "result": "6",
+    "error": null
+  },
+  {
+    "expr": "2*3",
+    "deg": false,
+    "result": "6",
+    "error": null
+  },
+  {
+    "expr": "7/2",
+    "deg": true,
+    "result": "3.5",
+    "error": null
+  },
+  {
+    "expr": "7/2",
+    "deg": false,
+    "result": "3.5",
+    "error": null
+  },
+  {
+    "expr": "2^10",
+    "deg": true,
+    "result": "1024",
+    "error": null
+  },
+  {
+    "expr": "2^10",
+    "deg": false,
+    "result": "1024",
+    "error": null
+  },
+  {
+    "expr": "2^0.5",
+    "deg": true,
+    "result": "1.41421356237",
+    "error": null
+  },
+  {
+    "expr": "2^0.5",
+    "deg": false,
+    "result": "1.41421356237",
+    "error": null
+  },
+  {
+    "expr": "(-8)^(1/3)",
+    "deg": true,
+    "result": "1 + 1.73205080757i",
+    "error": null
+  },
+  {
+    "expr": "(-8)^(1/3)",
+    "deg": false,
+    "result": "1 + 1.73205080757i",
+    "error": null
+  },
+  {
+    "expr": "1/3",
+    "deg": true,
+    "result": "0.333333333333",
+    "error": null
+  },
+  {
+    "expr": "1/3",
+    "deg": false,
+    "result": "0.333333333333",
+    "error": null
+  },
+  {
+    "expr": "5+3*2",
+    "deg": true,
+    "result": "11",
+    "error": null
+  },
+  {
+    "expr": "5+3*2",
+    "deg": false,
+    "result": "11",
+    "error": null
+  },
+  {
+    "expr": "(5+3)*2",
+    "deg": true,
+    "result": "16",
+    "error": null
+  },
+  {
+    "expr": "(5+3)*2",
+    "deg": false,
+    "result": "16",
+    "error": null
+  },
+  {
+    "expr": "2+3-4",
+    "deg": true,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "2+3-4",
+    "deg": false,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "10-2-3",
+    "deg": true,
+    "result": "5",
+    "error": null
+  },
+  {
+    "expr": "10-2-3",
+    "deg": false,
+    "result": "5",
+    "error": null
+  },
+  {
+    "expr": "100/5/2",
+    "deg": true,
+    "result": "10",
+    "error": null
+  },
+  {
+    "expr": "100/5/2",
+    "deg": false,
+    "result": "10",
+    "error": null
+  },
+  {
+    "expr": "-5",
+    "deg": true,
+    "result": "-5",
+    "error": null
+  },
+  {
+    "expr": "-5",
+    "deg": false,
+    "result": "-5",
+    "error": null
+  },
+  {
+    "expr": "-5+3",
+    "deg": true,
+    "result": "-2",
+    "error": null
+  },
+  {
+    "expr": "-5+3",
+    "deg": false,
+    "result": "-2",
+    "error": null
+  },
+  {
+    "expr": "3*-2",
+    "deg": true,
+    "result": "-6",
+    "error": null
+  },
+  {
+    "expr": "3*-2",
+    "deg": false,
+    "result": "-6",
+    "error": null
+  },
+  {
+    "expr": "2*-3",
+    "deg": true,
+    "result": "-6",
+    "error": null
+  },
+  {
+    "expr": "2*-3",
+    "deg": false,
+    "result": "-6",
+    "error": null
+  },
+  {
+    "expr": "--5",
+    "deg": true,
+    "result": "5",
+    "error": null
+  },
+  {
+    "expr": "--5",
+    "deg": false,
+    "result": "5",
+    "error": null
+  },
+  {
+    "expr": "-(-5)",
+    "deg": true,
+    "result": "5",
+    "error": null
+  },
+  {
+    "expr": "-(-5)",
+    "deg": false,
+    "result": "5",
+    "error": null
+  },
+  {
+    "expr": "1.5",
+    "deg": true,
+    "result": "1.5",
+    "error": null
+  },
+  {
+    "expr": "1.5",
+    "deg": false,
+    "result": "1.5",
+    "error": null
+  },
+  {
+    "expr": "0.1+0.2",
+    "deg": true,
+    "result": "0.3",
+    "error": null
+  },
+  {
+    "expr": "0.1+0.2",
+    "deg": false,
+    "result": "0.3",
+    "error": null
+  },
+  {
+    "expr": "1e3",
+    "deg": true,
+    "result": "1000",
+    "error": null
+  },
+  {
+    "expr": "1e3",
+    "deg": false,
+    "result": "1000",
+    "error": null
+  },
+  {
+    "expr": "1e-3",
+    "deg": true,
+    "result": "0.001",
+    "error": null
+  },
+  {
+    "expr": "1e-3",
+    "deg": false,
+    "result": "0.001",
+    "error": null
+  },
+  {
+    "expr": "2.5e3",
+    "deg": true,
+    "result": "2500",
+    "error": null
+  },
+  {
+    "expr": "2.5e3",
+    "deg": false,
+    "result": "2500",
+    "error": null
+  },
+  {
+    "expr": "1e308*10",
+    "deg": true,
+    "result": "inf",
+    "error": null
+  },
+  {
+    "expr": "1e308*10",
+    "deg": false,
+    "result": "inf",
+    "error": null
+  },
+  {
+    "expr": "2^1024",
+    "deg": true,
+    "result": "inf",
+    "error": null
+  },
+  {
+    "expr": "2^1024",
+    "deg": false,
+    "result": "inf",
+    "error": null
+  },
+  {
+    "expr": "5 + + 3",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Незавершённое выражение или два оператора подряд"
+  },
+  {
+    "expr": "5 + + 3",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Незавершённое выражение или два оператора подряд"
+  },
+  {
+    "expr": "10%3",
+    "deg": true,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "10%3",
+    "deg": false,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "-10%3",
+    "deg": true,
+    "result": "-1",
+    "error": null
+  },
+  {
+    "expr": "-10%3",
+    "deg": false,
+    "result": "-1",
+    "error": null
+  },
+  {
+    "expr": "10%-3",
+    "deg": true,
+    "result": "-2",
+    "error": null
+  },
+  {
+    "expr": "10%-3",
+    "deg": false,
+    "result": "-2",
+    "error": null
+  },
+  {
+    "expr": "5%0",
+    "deg": true,
+    "result": "nan",
+    "error": null
+  },
+  {
+    "expr": "5%0",
+    "deg": false,
+    "result": "nan",
+    "error": null
+  },
+  {
+    "expr": "5!",
+    "deg": true,
+    "result": "120",
+    "error": null
+  },
+  {
+    "expr": "5!",
+    "deg": false,
+    "result": "120",
+    "error": null
+  },
+  {
+    "expr": "0!",
+    "deg": true,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "0!",
+    "deg": false,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "3!+2!",
+    "deg": true,
+    "result": "8",
+    "error": null
+  },
+  {
+    "expr": "3!+2!",
+    "deg": false,
+    "result": "8",
+    "error": null
+  },
+  {
+    "expr": "-1!",
+    "deg": true,
+    "result": "-1",
+    "error": null
+  },
+  {
+    "expr": "-1!",
+    "deg": false,
+    "result": "-1",
+    "error": null
+  },
+  {
+    "expr": "2.5!",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Факториал определён только для целых чисел"
+  },
+  {
+    "expr": "2.5!",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Факториал определён только для целых чисел"
+  },
+  {
+    "expr": "20!",
+    "deg": true,
+    "result": "2.43290200818e+18",
+    "error": null
+  },
+  {
+    "expr": "20!",
+    "deg": false,
+    "result": "2.43290200818e+18",
+    "error": null
+  },
+  {
+    "expr": "171!",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Факториал слишком велик для double"
+  },
+  {
+    "expr": "171!",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Факториал слишком велик для double"
+  },
+  {
+    "expr": "((1+2))",
+    "deg": true,
+    "result": "3",
+    "error": null
+  },
+  {
+    "expr": "((1+2))",
+    "deg": false,
+    "result": "3",
+    "error": null
+  },
+  {
+    "expr": "(1+2",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Несогласованные скобки"
+  },
+  {
+    "expr": "(1+2",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Несогласованные скобки"
+  },
+  {
+    "expr": "1+2)",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Несогласованные скобки"
+  },
+  {
+    "expr": "1+2)",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Несогласованные скобки"
+  },
+  {
+    "expr": "()",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Пустое выражение"
+  },
+  {
+    "expr": "()",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Пустое выражение"
+  },
+  {
+    "expr": "sin()",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Функция sin вызвана без аргументов"
+  },
+  {
+    "expr": "sin()",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Функция sin вызвана без аргументов"
+  },
+  {
+    "expr": "fact()",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Функция fact вызвана без аргументов"
+  },
+  {
+    "expr": "fact()",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Функция fact вызвана без аргументов"
+  },
+  {
+    "expr": "sin(0)",
+    "deg": true,
+    "result": "0",
+    "error": null
+  },
+  {
+    "expr": "sin(0)",
+    "deg": false,
+    "result": "0",
+    "error": null
+  },
+  {
+    "expr": "sin(30)",
+    "deg": true,
+    "result": "0.5",
+    "error": null
+  },
+  {
+    "expr": "sin(30)",
+    "deg": false,
+    "result": "-0.988031624093",
+    "error": null
+  },
+  {
+    "expr": "sin(90)",
+    "deg": true,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "sin(90)",
+    "deg": false,
+    "result": "0.893996663601",
+    "error": null
+  },
+  {
+    "expr": "sin(180)",
+    "deg": true,
+    "result": "1.22464679915e-16",
+    "error": null
+  },
+  {
+    "expr": "sin(180)",
+    "deg": false,
+    "result": "-0.801152635734",
+    "error": null
+  },
+  {
+    "expr": "cos(60)",
+    "deg": true,
+    "result": "0.5",
+    "error": null
+  },
+  {
+    "expr": "cos(60)",
+    "deg": false,
+    "result": "-0.952412980415",
+    "error": null
+  },
+  {
+    "expr": "cos(90)",
+    "deg": true,
+    "result": "6.12323399574e-17",
+    "error": null
+  },
+  {
+    "expr": "cos(90)",
+    "deg": false,
+    "result": "-0.448073616129",
+    "error": null
+  },
+  {
+    "expr": "tan(45)",
+    "deg": true,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "tan(45)",
+    "deg": false,
+    "result": "1.61977519054",
+    "error": null
+  },
+  {
+    "expr": "tan(0)",
+    "deg": true,
+    "result": "0",
+    "error": null
+  },
+  {
+    "expr": "tan(0)",
+    "deg": false,
+    "result": "0",
+    "error": null
+  },
+  {
+    "expr": "asin(1)",
+    "deg": true,
+    "result": "90",
+    "error": null
+  },
+  {
+    "expr": "asin(1)",
+    "deg": false,
+    "result": "1.57079632679",
+    "error": null
+  },
+  {
+    "expr": "asin(0.5)",
+    "deg": true,
+    "result": "30",
+    "error": null
+  },
+  {
+    "expr": "asin(0.5)",
+    "deg": false,
+    "result": "0.523598775598",
+    "error": null
+  },
+  {
+    "expr": "acos(0)",
+    "deg": true,
+    "result": "90",
+    "error": null
+  },
+  {
+    "expr": "acos(0)",
+    "deg": false,
+    "result": "1.57079632679",
+    "error": null
+  },
+  {
+    "expr": "acos(1)",
+    "deg": true,
+    "result": "0",
+    "error": null
+  },
+  {
+    "expr": "acos(1)",
+    "deg": false,
+    "result": "0",
+    "error": null
+  },
+  {
+    "expr": "atan(1)",
+    "deg": true,
+    "result": "45",
+    "error": null
+  },
+  {
+    "expr": "atan(1)",
+    "deg": false,
+    "result": "0.785398163397",
+    "error": null
+  },
+  {
+    "expr": "atan(0)",
+    "deg": true,
+    "result": "0",
+    "error": null
+  },
+  {
+    "expr": "atan(0)",
+    "deg": false,
+    "result": "0",
+    "error": null
+  },
+  {
+    "expr": "sin(0)",
+    "deg": true,
+    "result": "0",
+    "error": null
+  },
+  {
+    "expr": "sin(0)",
+    "deg": false,
+    "result": "0",
+    "error": null
+  },
+  {
+    "expr": "sin(pi)",
+    "deg": true,
+    "result": "0.0548036651488",
+    "error": null
+  },
+  {
+    "expr": "sin(pi)",
+    "deg": false,
+    "result": "1.22464679915e-16",
+    "error": null
+  },
+  {
+    "expr": "sin(pi/2)",
+    "deg": true,
+    "result": "0.027412133592",
+    "error": null
+  },
+  {
+    "expr": "sin(pi/2)",
+    "deg": false,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "cos(pi)",
+    "deg": true,
+    "result": "0.998497149864",
+    "error": null
+  },
+  {
+    "expr": "cos(pi)",
+    "deg": false,
+    "result": "-1",
+    "error": null
+  },
+  {
+    "expr": "tan(pi/4)",
+    "deg": true,
+    "result": "0.0137086425344",
+    "error": null
+  },
+  {
+    "expr": "tan(pi/4)",
+    "deg": false,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "asin(1)",
+    "deg": true,
+    "result": "90",
+    "error": null
+  },
+  {
+    "expr": "asin(1)",
+    "deg": false,
+    "result": "1.57079632679",
+    "error": null
+  },
+  {
+    "expr": "atan(1)",
+    "deg": true,
+    "result": "45",
+    "error": null
+  },
+  {
+    "expr": "atan(1)",
+    "deg": false,
+    "result": "0.785398163397",
+    "error": null
+  },
+  {
+    "expr": "sinh(1)",
+    "deg": true,
+    "result": "1.17520119364",
+    "error": null
+  },
+  {
+    "expr": "sinh(1)",
+    "deg": false,
+    "result": "1.17520119364",
+    "error": null
+  },
+  {
+    "expr": "cosh(1)",
+    "deg": true,
+    "result": "1.54308063482",
+    "error": null
+  },
+  {
+    "expr": "cosh(1)",
+    "deg": false,
+    "result": "1.54308063482",
+    "error": null
+  },
+  {
+    "expr": "tanh(1)",
+    "deg": true,
+    "result": "0.761594155956",
+    "error": null
+  },
+  {
+    "expr": "tanh(1)",
+    "deg": false,
+    "result": "0.761594155956",
+    "error": null
+  },
+  {
+    "expr": "asinh(1)",
+    "deg": true,
+    "result": "0.88137358702",
+    "error": null
+  },
+  {
+    "expr": "asinh(1)",
+    "deg": false,
+    "result": "0.88137358702",
+    "error": null
+  },
+  {
+    "expr": "acosh(1)",
+    "deg": true,
+    "result": "0",
+    "error": null
+  },
+  {
+    "expr": "acosh(1)",
+    "deg": false,
+    "result": "0",
+    "error": null
+  },
+  {
+    "expr": "atanh(0.5)",
+    "deg": true,
+    "result": "0.549306144334",
+    "error": null
+  },
+  {
+    "expr": "atanh(0.5)",
+    "deg": false,
+    "result": "0.549306144334",
+    "error": null
+  },
+  {
+    "expr": "ln(e)",
+    "deg": true,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "ln(e)",
+    "deg": false,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "log(100)",
+    "deg": true,
+    "result": "4.60517018599",
+    "error": null
+  },
+  {
+    "expr": "log(100)",
+    "deg": false,
+    "result": "4.60517018599",
+    "error": null
+  },
+  {
+    "expr": "log(8,2)",
+    "deg": true,
+    "result": "2.07944154168",
+    "error": null
+  },
+  {
+    "expr": "log(8,2)",
+    "deg": false,
+    "result": "2.07944154168",
+    "error": null
+  },
+  {
+    "expr": "log2(8)",
+    "deg": true,
+    "result": "3",
+    "error": null
+  },
+  {
+    "expr": "log2(8)",
+    "deg": false,
+    "result": "3",
+    "error": null
+  },
+  {
+    "expr": "log10(1000)",
+    "deg": true,
+    "result": "3",
+    "error": null
+  },
+  {
+    "expr": "log10(1000)",
+    "deg": false,
+    "result": "3",
+    "error": null
+  },
+  {
+    "expr": "exp(1)",
+    "deg": true,
+    "result": "2.71828182846",
+    "error": null
+  },
+  {
+    "expr": "exp(1)",
+    "deg": false,
+    "result": "2.71828182846",
+    "error": null
+  },
+  {
+    "expr": "e^1",
+    "deg": true,
+    "result": "2.71828182846",
+    "error": null
+  },
+  {
+    "expr": "e^1",
+    "deg": false,
+    "result": "2.71828182846",
+    "error": null
+  },
+  {
+    "expr": "sqrt(16)",
+    "deg": true,
+    "result": "4",
+    "error": null
+  },
+  {
+    "expr": "sqrt(16)",
+    "deg": false,
+    "result": "4",
+    "error": null
+  },
+  {
+    "expr": "sqrt(2)",
+    "deg": true,
+    "result": "1.41421356237",
+    "error": null
+  },
+  {
+    "expr": "sqrt(2)",
+    "deg": false,
+    "result": "1.41421356237",
+    "error": null
+  },
+  {
+    "expr": "cbrt(27)",
+    "deg": true,
+    "result": "3",
+    "error": null
+  },
+  {
+    "expr": "cbrt(27)",
+    "deg": false,
+    "result": "3",
+    "error": null
+  },
+  {
+    "expr": "cbrt(-8)",
+    "deg": true,
+    "result": "-2",
+    "error": null
+  },
+  {
+    "expr": "cbrt(-8)",
+    "deg": false,
+    "result": "-2",
+    "error": null
+  },
+  {
+    "expr": "sqrt(-1)",
+    "deg": true,
+    "result": "0 + 1i",
+    "error": null
+  },
+  {
+    "expr": "sqrt(-1)",
+    "deg": false,
+    "result": "0 + 1i",
+    "error": null
+  },
+  {
+    "expr": "sqrt(-4)",
+    "deg": true,
+    "result": "0 + 2i",
+    "error": null
+  },
+  {
+    "expr": "sqrt(-4)",
+    "deg": false,
+    "result": "0 + 2i",
+    "error": null
+  },
+  {
+    "expr": "sign(-5)",
+    "deg": true,
+    "result": "-1",
+    "error": null
+  },
+  {
+    "expr": "sign(-5)",
+    "deg": false,
+    "result": "-1",
+    "error": null
+  },
+  {
+    "expr": "sign(0)",
+    "deg": true,
+    "result": "0",
+    "error": null
+  },
+  {
+    "expr": "sign(0)",
+    "deg": false,
+    "result": "0",
+    "error": null
+  },
+  {
+    "expr": "sign(5)",
+    "deg": true,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "sign(5)",
+    "deg": false,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "abs(-5)",
+    "deg": true,
+    "result": "5",
+    "error": null
+  },
+  {
+    "expr": "abs(-5)",
+    "deg": false,
+    "result": "5",
+    "error": null
+  },
+  {
+    "expr": "abs(3+4i)",
+    "deg": true,
+    "result": "5",
+    "error": null
+  },
+  {
+    "expr": "abs(3+4i)",
+    "deg": false,
+    "result": "5",
+    "error": null
+  },
+  {
+    "expr": "fabs(-2.5)",
+    "deg": true,
+    "result": "2.5",
+    "error": null
+  },
+  {
+    "expr": "fabs(-2.5)",
+    "deg": false,
+    "result": "2.5",
+    "error": null
+  },
+  {
+    "expr": "floor(2.7)",
+    "deg": true,
+    "result": "2",
+    "error": null
+  },
+  {
+    "expr": "floor(2.7)",
+    "deg": false,
+    "result": "2",
+    "error": null
+  },
+  {
+    "expr": "ceil(2.1)",
+    "deg": true,
+    "result": "3",
+    "error": null
+  },
+  {
+    "expr": "ceil(2.1)",
+    "deg": false,
+    "result": "3",
+    "error": null
+  },
+  {
+    "expr": "round(2.5)",
+    "deg": true,
+    "result": "2",
+    "error": null
+  },
+  {
+    "expr": "round(2.5)",
+    "deg": false,
+    "result": "2",
+    "error": null
+  },
+  {
+    "expr": "round(3.5)",
+    "deg": true,
+    "result": "4",
+    "error": null
+  },
+  {
+    "expr": "round(3.5)",
+    "deg": false,
+    "result": "4",
+    "error": null
+  },
+  {
+    "expr": "round(-2.5)",
+    "deg": true,
+    "result": "-2",
+    "error": null
+  },
+  {
+    "expr": "round(-2.5)",
+    "deg": false,
+    "result": "-2",
+    "error": null
+  },
+  {
+    "expr": "round(2.345, 2)",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Функция round ожидает 1 аргумент(ов), а получено 2"
+  },
+  {
+    "expr": "round(2.345, 2)",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Функция round ожидает 1 аргумент(ов), а получено 2"
+  },
+  {
+    "expr": "floor(-2.5)",
+    "deg": true,
+    "result": "-3",
+    "error": null
+  },
+  {
+    "expr": "floor(-2.5)",
+    "deg": false,
+    "result": "-3",
+    "error": null
+  },
+  {
+    "expr": "pi",
+    "deg": true,
+    "result": "3.14159265359",
+    "error": null
+  },
+  {
+    "expr": "pi",
+    "deg": false,
+    "result": "3.14159265359",
+    "error": null
+  },
+  {
+    "expr": "e",
+    "deg": true,
+    "result": "2.71828182846",
+    "error": null
+  },
+  {
+    "expr": "e",
+    "deg": false,
+    "result": "2.71828182846",
+    "error": null
+  },
+  {
+    "expr": "tau",
+    "deg": true,
+    "result": "6.28318530718",
+    "error": null
+  },
+  {
+    "expr": "tau",
+    "deg": false,
+    "result": "6.28318530718",
+    "error": null
+  },
+  {
+    "expr": "phi",
+    "deg": true,
+    "result": "1.61803398875",
+    "error": null
+  },
+  {
+    "expr": "phi",
+    "deg": false,
+    "result": "1.61803398875",
+    "error": null
+  },
+  {
+    "expr": "c",
+    "deg": true,
+    "result": "299792458",
+    "error": null
+  },
+  {
+    "expr": "c",
+    "deg": false,
+    "result": "299792458",
+    "error": null
+  },
+  {
+    "expr": "g",
+    "deg": true,
+    "result": "9.80665",
+    "error": null
+  },
+  {
+    "expr": "g",
+    "deg": false,
+    "result": "9.80665",
+    "error": null
+  },
+  {
+    "expr": "i",
+    "deg": true,
+    "result": "0 + 1i",
+    "error": null
+  },
+  {
+    "expr": "i",
+    "deg": false,
+    "result": "0 + 1i",
+    "error": null
+  },
+  {
+    "expr": "I",
+    "deg": true,
+    "result": "0 + 1i",
+    "error": null
+  },
+  {
+    "expr": "I",
+    "deg": false,
+    "result": "0 + 1i",
+    "error": null
+  },
+  {
+    "expr": "2pi",
+    "deg": true,
+    "result": "6.28318530718",
+    "error": null
+  },
+  {
+    "expr": "2pi",
+    "deg": false,
+    "result": "6.28318530718",
+    "error": null
+  },
+  {
+    "expr": "2*pi",
+    "deg": true,
+    "result": "6.28318530718",
+    "error": null
+  },
+  {
+    "expr": "2*pi",
+    "deg": false,
+    "result": "6.28318530718",
+    "error": null
+  },
+  {
+    "expr": "pi/2",
+    "deg": true,
+    "result": "1.57079632679",
+    "error": null
+  },
+  {
+    "expr": "pi/2",
+    "deg": false,
+    "result": "1.57079632679",
+    "error": null
+  },
+  {
+    "expr": "2e",
+    "deg": true,
+    "result": "5.43656365692",
+    "error": null
+  },
+  {
+    "expr": "2e",
+    "deg": false,
+    "result": "5.43656365692",
+    "error": null
+  },
+  {
+    "expr": "e^2",
+    "deg": true,
+    "result": "7.38905609893",
+    "error": null
+  },
+  {
+    "expr": "e^2",
+    "deg": false,
+    "result": "7.38905609893",
+    "error": null
+  },
+  {
+    "expr": "1/pi",
+    "deg": true,
+    "result": "0.318309886184",
+    "error": null
+  },
+  {
+    "expr": "1/pi",
+    "deg": false,
+    "result": "0.318309886184",
+    "error": null
+  },
+  {
+    "expr": "12&10",
+    "deg": true,
+    "result": "8",
+    "error": null
+  },
+  {
+    "expr": "12&10",
+    "deg": false,
+    "result": "8",
+    "error": null
+  },
+  {
+    "expr": "12|10",
+    "deg": true,
+    "result": "14",
+    "error": null
+  },
+  {
+    "expr": "12|10",
+    "deg": false,
+    "result": "14",
+    "error": null
+  },
+  {
+    "expr": "12 xor 10",
+    "deg": true,
+    "result": "6",
+    "error": null
+  },
+  {
+    "expr": "12 xor 10",
+    "deg": false,
+    "result": "6",
+    "error": null
+  },
+  {
+    "expr": "1<<3",
+    "deg": true,
+    "result": "8",
+    "error": null
+  },
+  {
+    "expr": "1<<3",
+    "deg": false,
+    "result": "8",
+    "error": null
+  },
+  {
+    "expr": "16>>2",
+    "deg": true,
+    "result": "4",
+    "error": null
+  },
+  {
+    "expr": "16>>2",
+    "deg": false,
+    "result": "4",
+    "error": null
+  },
+  {
+    "expr": "~5",
+    "deg": true,
+    "result": "-6",
+    "error": null
+  },
+  {
+    "expr": "~5",
+    "deg": false,
+    "result": "-6",
+    "error": null
+  },
+  {
+    "expr": "not(5)",
+    "deg": true,
+    "result": "-6",
+    "error": null
+  },
+  {
+    "expr": "not(5)",
+    "deg": false,
+    "result": "-6",
+    "error": null
+  },
+  {
+    "expr": "5 and 3",
+    "deg": true,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "5 and 3",
+    "deg": false,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "5 or 3",
+    "deg": true,
+    "result": "7",
+    "error": null
+  },
+  {
+    "expr": "5 or 3",
+    "deg": false,
+    "result": "7",
+    "error": null
+  },
+  {
+    "expr": "5 xor 3",
+    "deg": true,
+    "result": "6",
+    "error": null
+  },
+  {
+    "expr": "5 xor 3",
+    "deg": false,
+    "result": "6",
+    "error": null
+  },
+  {
+    "expr": "1 shl 3",
+    "deg": true,
+    "result": "8",
+    "error": null
+  },
+  {
+    "expr": "1 shl 3",
+    "deg": false,
+    "result": "8",
+    "error": null
+  },
+  {
+    "expr": "16 shr 2",
+    "deg": true,
+    "result": "4",
+    "error": null
+  },
+  {
+    "expr": "16 shr 2",
+    "deg": false,
+    "result": "4",
+    "error": null
+  },
+  {
+    "expr": "5 & 3",
+    "deg": true,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "5 & 3",
+    "deg": false,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "5 | 3",
+    "deg": true,
+    "result": "7",
+    "error": null
+  },
+  {
+    "expr": "5 | 3",
+    "deg": false,
+    "result": "7",
+    "error": null
+  },
+  {
+    "expr": "2.5 & 1",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Побитовые операции определены только для целых чисел"
+  },
+  {
+    "expr": "2.5 & 1",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Побитовые операции определены только для целых чисел"
+  },
+  {
+    "expr": "~2.5",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Побитовые операции определены только для целых чисел"
+  },
+  {
+    "expr": "~2.5",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Побитовые операции определены только для целых чисел"
+  },
+  {
+    "expr": "gcd(12,10)",
+    "deg": true,
+    "result": "2",
+    "error": null
+  },
+  {
+    "expr": "gcd(12,10)",
+    "deg": false,
+    "result": "2",
+    "error": null
+  },
+  {
+    "expr": "lcm(4,6)",
+    "deg": true,
+    "result": "12",
+    "error": null
+  },
+  {
+    "expr": "lcm(4,6)",
+    "deg": false,
+    "result": "12",
+    "error": null
+  },
+  {
+    "expr": "ncr(5,2)",
+    "deg": true,
+    "result": "10",
+    "error": null
+  },
+  {
+    "expr": "ncr(5,2)",
+    "deg": false,
+    "result": "10",
+    "error": null
+  },
+  {
+    "expr": "npr(5,2)",
+    "deg": true,
+    "result": "20",
+    "error": null
+  },
+  {
+    "expr": "npr(5,2)",
+    "deg": false,
+    "result": "20",
+    "error": null
+  },
+  {
+    "expr": "fact(5)",
+    "deg": true,
+    "result": "120",
+    "error": null
+  },
+  {
+    "expr": "fact(5)",
+    "deg": false,
+    "result": "120",
+    "error": null
+  },
+  {
+    "expr": "isprime(7)",
+    "deg": true,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "isprime(7)",
+    "deg": false,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "isprime(8)",
+    "deg": true,
+    "result": "0",
+    "error": null
+  },
+  {
+    "expr": "isprime(8)",
+    "deg": false,
+    "result": "0",
+    "error": null
+  },
+  {
+    "expr": "nextprime(10)",
+    "deg": true,
+    "result": "11",
+    "error": null
+  },
+  {
+    "expr": "nextprime(10)",
+    "deg": false,
+    "result": "11",
+    "error": null
+  },
+  {
+    "expr": "totient(12)",
+    "deg": true,
+    "result": "4",
+    "error": null
+  },
+  {
+    "expr": "totient(12)",
+    "deg": false,
+    "result": "4",
+    "error": null
+  },
+  {
+    "expr": "modpow(2,10,1000)",
+    "deg": true,
+    "result": "24",
+    "error": null
+  },
+  {
+    "expr": "modpow(2,10,1000)",
+    "deg": false,
+    "result": "24",
+    "error": null
+  },
+  {
+    "expr": "2pi",
+    "deg": true,
+    "result": "6.28318530718",
+    "error": null
+  },
+  {
+    "expr": "2pi",
+    "deg": false,
+    "result": "6.28318530718",
+    "error": null
+  },
+  {
+    "expr": "3(4)",
+    "deg": true,
+    "result": "12",
+    "error": null
+  },
+  {
+    "expr": "3(4)",
+    "deg": false,
+    "result": "12",
+    "error": null
+  },
+  {
+    "expr": "(2)(3)",
+    "deg": true,
+    "result": "6",
+    "error": null
+  },
+  {
+    "expr": "(2)(3)",
+    "deg": false,
+    "result": "6",
+    "error": null
+  },
+  {
+    "expr": "2(3)(4)",
+    "deg": true,
+    "result": "24",
+    "error": null
+  },
+  {
+    "expr": "2(3)(4)",
+    "deg": false,
+    "result": "24",
+    "error": null
+  },
+  {
+    "expr": "2sin(30)",
+    "deg": true,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "2sin(30)",
+    "deg": false,
+    "result": "-1.97606324819",
+    "error": null
+  },
+  {
+    "expr": "i*i",
+    "deg": true,
+    "result": "-1",
+    "error": null
+  },
+  {
+    "expr": "i*i",
+    "deg": false,
+    "result": "-1",
+    "error": null
+  },
+  {
+    "expr": "i^2",
+    "deg": true,
+    "result": "-1",
+    "error": null
+  },
+  {
+    "expr": "i^2",
+    "deg": false,
+    "result": "-1",
+    "error": null
+  },
+  {
+    "expr": "(1+2i)+(3+4i)",
+    "deg": true,
+    "result": "4 + 6i",
+    "error": null
+  },
+  {
+    "expr": "(1+2i)+(3+4i)",
+    "deg": false,
+    "result": "4 + 6i",
+    "error": null
+  },
+  {
+    "expr": "(1+2i)*(3+4i)",
+    "deg": true,
+    "result": "-5 + 10i",
+    "error": null
+  },
+  {
+    "expr": "(1+2i)*(3+4i)",
+    "deg": false,
+    "result": "-5 + 10i",
+    "error": null
+  },
+  {
+    "expr": "(3+4i)/(1+2i)",
+    "deg": true,
+    "result": "2.2 − 0.4i",
+    "error": null
+  },
+  {
+    "expr": "(3+4i)/(1+2i)",
+    "deg": false,
+    "result": "2.2 − 0.4i",
+    "error": null
+  },
+  {
+    "expr": "3+4i",
+    "deg": true,
+    "result": "3 + 4i",
+    "error": null
+  },
+  {
+    "expr": "3+4i",
+    "deg": false,
+    "result": "3 + 4i",
+    "error": null
+  },
+  {
+    "expr": "2i",
+    "deg": true,
+    "result": "0 + 2i",
+    "error": null
+  },
+  {
+    "expr": "2i",
+    "deg": false,
+    "result": "0 + 2i",
+    "error": null
+  },
+  {
+    "expr": "i+1",
+    "deg": true,
+    "result": "1 + 1i",
+    "error": null
+  },
+  {
+    "expr": "i+1",
+    "deg": false,
+    "result": "1 + 1i",
+    "error": null
+  },
+  {
+    "expr": "sqrt(-4)",
+    "deg": true,
+    "result": "0 + 2i",
+    "error": null
+  },
+  {
+    "expr": "sqrt(-4)",
+    "deg": false,
+    "result": "0 + 2i",
+    "error": null
+  },
+  {
+    "expr": "(2+3i)*(2-3i)",
+    "deg": true,
+    "result": "13",
+    "error": null
+  },
+  {
+    "expr": "(2+3i)*(2-3i)",
+    "deg": false,
+    "result": "13",
+    "error": null
+  },
+  {
+    "expr": "1/0",
+    "deg": true,
+    "result": "inf",
+    "error": null
+  },
+  {
+    "expr": "1/0",
+    "deg": false,
+    "result": "inf",
+    "error": null
+  },
+  {
+    "expr": "1.5.2",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Некорректное число: «1.5.2» — проверьте ввод"
+  },
+  {
+    "expr": "1.5.2",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Некорректное число: «1.5.2» — проверьте ввод"
+  },
+  {
+    "expr": "sin()",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Функция sin вызвана без аргументов"
+  },
+  {
+    "expr": "sin()",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Функция sin вызвана без аргументов"
+  },
+  {
+    "expr": "fact()",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Функция fact вызвана без аргументов"
+  },
+  {
+    "expr": "fact()",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Функция fact вызвана без аргументов"
+  },
+  {
+    "expr": "2**3",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Два оператора подряд: «**»"
+  },
+  {
+    "expr": "2**3",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Два оператора подряд: «**»"
+  },
+  {
+    "expr": "foo(2)",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Неизвестная функция: foo"
+  },
+  {
+    "expr": "foo(2)",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Неизвестная функция: foo"
+  },
+  {
+    "expr": "unknownfunc(1)",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Неизвестная функция: unknownfunc"
+  },
+  {
+    "expr": "unknownfunc(1)",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Неизвестная функция: unknownfunc"
+  },
+  {
+    "expr": "5 + + 3",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Незавершённое выражение или два оператора подряд"
+  },
+  {
+    "expr": "5 + + 3",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Незавершённое выражение или два оператора подряд"
+  },
+  {
+    "expr": "(1+2",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Несогласованные скобки"
+  },
+  {
+    "expr": "(1+2",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Несогласованные скобки"
+  },
+  {
+    "expr": "1+2)",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Несогласованные скобки"
+  },
+  {
+    "expr": "1+2)",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Несогласованные скобки"
+  },
+  {
+    "expr": "2+",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Незавершённое выражение: не хватает операнда"
+  },
+  {
+    "expr": "2+",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Незавершённое выражение: не хватает операнда"
+  },
+  {
+    "expr": "2*",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Незавершённое выражение: не хватает операнда"
+  },
+  {
+    "expr": "2*",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Незавершённое выражение: не хватает операнда"
+  },
+  {
+    "expr": "5!",
+    "deg": true,
+    "result": "120",
+    "error": null
+  },
+  {
+    "expr": "5!",
+    "deg": false,
+    "result": "120",
+    "error": null
+  },
+  {
+    "expr": "-1!",
+    "deg": true,
+    "result": "-1",
+    "error": null
+  },
+  {
+    "expr": "-1!",
+    "deg": false,
+    "result": "-1",
+    "error": null
+  },
+  {
+    "expr": "log(8)",
+    "deg": true,
+    "result": "2.07944154168",
+    "error": null
+  },
+  {
+    "expr": "log(8)",
+    "deg": false,
+    "result": "2.07944154168",
+    "error": null
+  },
+  {
+    "expr": "log(8,2,3)",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Функция log ожидает -1 аргумент(ов), а получено 3"
+  },
+  {
+    "expr": "log(8,2,3)",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Функция log ожидает -1 аргумент(ов), а получено 3"
+  },
+  {
+    "expr": "0!",
+    "deg": true,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "0!",
+    "deg": false,
+    "result": "1",
+    "error": null
+  },
+  {
+    "expr": "-1",
+    "deg": true,
+    "result": "-1",
+    "error": null
+  },
+  {
+    "expr": "-1",
+    "deg": false,
+    "result": "-1",
+    "error": null
+  },
+  {
+    "expr": "1.5.2.3",
+    "deg": true,
+    "result": null,
+    "error": "ExprError: Некорректное число: «1.5.2» — проверьте ввод"
+  },
+  {
+    "expr": "1.5.2.3",
+    "deg": false,
+    "result": null,
+    "error": "ExprError: Некорректное число: «1.5.2» — проверьте ввод"
+  },
+  {
+    "expr": "sin(cos(tan(30)))",
+    "deg": true,
+    "result": "0.0174515204836",
+    "error": null
+  },
+  {
+    "expr": "sin(cos(tan(30)))",
+    "deg": false,
+    "result": "0.83742212352",
+    "error": null
+  },
+  {
+    "expr": "sqrt(abs(-16))",
+    "deg": true,
+    "result": "4",
+    "error": null
+  },
+  {
+    "expr": "sqrt(abs(-16))",
+    "deg": false,
+    "result": "4",
+    "error": null
+  },
+  {
+    "expr": "log(gcd(12,18))",
+    "deg": true,
+    "result": "1.79175946923",
+    "error": null
+  },
+  {
+    "expr": "log(gcd(12,18))",
+    "deg": false,
+    "result": "1.79175946923",
+    "error": null
+  },
+  {
+    "expr": "round(sqrt(2)*100)/100",
+    "deg": true,
+    "result": "1.41",
+    "error": null
+  },
+  {
+    "expr": "round(sqrt(2)*100)/100",
+    "deg": false,
+    "result": "1.41",
+    "error": null
+  }
+]

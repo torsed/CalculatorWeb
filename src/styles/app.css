@@ -1,0 +1,741 @@
+@import url('tokens.css');
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* ── Каркас ──────────────────────────────────────────────── */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--grid);
+  flex: 0 0 auto;
+}
+/* Скрытая горизонтальная прокрутка оставлена на случай очень узких окон,
+   когда вкладки всё-таки не помещаются даже в две строки. */
+.topbar {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.topbar::-webkit-scrollbar {
+  display: none;
+}
+
+.brand {
+  font-weight: 600;
+  font-size: 17px;
+  margin-right: 8px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.tab {
+  border: 1px solid var(--grid);
+  background: transparent;
+  color: var(--sub);
+  padding: 7px 13px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 13px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  font-family: inherit;
+  transition:
+    background 0.12s,
+    color 0.12s;
+}
+.tab:hover {
+  background: var(--card);
+  color: var(--fg);
+}
+.tab[aria-selected='true'] {
+  background: var(--btn-op);
+  border-color: var(--btn-op);
+  color: var(--btn-op-fg);
+  font-weight: 600;
+}
+
+.topbar .spacer {
+  flex: 1 1 auto;
+}
+
+.icon-btn,
+.lang-btn {
+  border: 1px solid var(--grid);
+  background: transparent;
+  color: var(--sub);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 15px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+}
+.icon-btn:hover,
+.lang-btn:hover {
+  background: var(--card);
+  color: var(--fg);
+}
+
+.pages {
+  flex: 1 1 auto;
+  overflow: hidden;
+  position: relative;
+}
+.page {
+  display: none;
+  height: 100%;
+  overflow: auto;
+  padding: 12px;
+}
+.page.active {
+  display: block;
+}
+
+/* ── Калькулятор ──────────────────────────────────────────── */
+.calc {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 8px;
+  height: 100%;
+  min-height: 0;
+}
+
+.calc-left {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+/* Боковая история: фиксированная доля, свой скролл, сворачивается классом. */
+.calc-right {
+  flex: 0 0 300px;
+  width: 300px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.calc-right .card {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+}
+/* Свёрнутое состояние: от панели остаётся узкая рейка с кнопкой ▶. */
+.calc-right.narrow {
+  flex: 0 0 44px;
+  width: 44px;
+}
+.calc-right.narrow .card {
+  display: none;
+}
+.calc-rail {
+  display: none;
+  flex: 0 0 auto;
+  align-self: flex-start;
+  padding: 4px 10px;
+  font-size: 12px;
+  position: sticky;
+  top: 0;
+}
+.calc-right.narrow .calc-rail {
+  display: block;
+}
+
+.display-col {
+  text-align: right;
+  padding: 10px 14px 6px;
+  flex: 0 0 auto;
+}
+
+.expr {
+  color: var(--sub);
+  font-size: 15px;
+  min-height: 20px;
+  word-break: break-all;
+  line-height: 1.35;
+}
+
+.result {
+  font-size: 46px;
+  font-weight: 300;
+  line-height: 1.12;
+  word-break: break-all;
+  min-height: 52px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  transition: font-size 0.1s;
+}
+.result.err {
+  color: var(--err);
+  font-size: 24px;
+}
+
+.mem-line {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  color: var(--sub);
+  font-size: 12px;
+  min-height: 16px;
+  flex: 0 0 auto;
+}
+.mem-line b {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+.pad {
+  flex: 0 0 auto;
+  display: grid;
+  gap: 7px;
+  grid-template-columns: repeat(4, 1fr);
+  /* Фиксированный ряд: кнопки одинаковые на любом экране, не лопаты и не спички. */
+  grid-auto-rows: 64px;
+  padding-bottom: 8px;
+}
+/* Верхний блок научных/программистских клавиш: компактнее основного. */
+.sci-pad {
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: 44px;
+  margin-bottom: 7px;
+  padding-bottom: 0;
+}
+
+.key {
+  border: none;
+  border-radius: var(--radius);
+  background: var(--btn-num);
+  color: var(--btn-num-fg);
+  font-size: 21px;
+  font-family: inherit;
+  cursor: pointer;
+  min-height: 42px;
+  display: grid;
+  place-items: center;
+  transition:
+    filter 0.1s,
+    transform 0.05s;
+  user-select: none;
+  padding: 0 4px;
+}
+.key:hover {
+  filter: brightness(1.18);
+}
+.key:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+.key:active {
+  transform: scale(0.96);
+}
+.key.op {
+  background: var(--btn-op);
+  color: var(--btn-op-fg);
+  font-weight: 500;
+}
+.key.util {
+  background: var(--btn-util);
+  color: var(--btn-util-fg);
+  font-size: 16px;
+}
+.key.sci {
+  background: var(--btn-sci);
+  color: var(--btn-sci-fg);
+  font-size: 14px;
+}
+.key.wide {
+  grid-column: span 2;
+}
+
+/* Скрыто визуально, но доступно скринридеру (WCAG 4.1.3 live-регионы). */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.skip-link {
+  position: absolute;
+  left: 8px;
+  top: -48px;
+  z-index: 300;
+  background: var(--btn-op);
+  color: var(--btn-op-fg);
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: top 0.15s;
+}
+.skip-link:focus {
+  top: 8px;
+}
+
+/* Сообщение для отключённого JavaScript (внутри <noscript>).
+ * Вынесено в CSS: CSP без 'unsafe-inline' запрещает атрибут style. */
+.noscript-msg {
+  padding: 16px;
+  font-family: sans-serif;
+}
+
+/* Единый видимый фокус для всех интерактивных элементов (WCAG 2.4.7). */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Поля конвертера с подписью сверху. */
+.conv-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 140px;
+  min-width: 0;
+}
+.label-hint {
+  font-size: 12px;
+  color: var(--sub);
+}
+
+/* ── Общие панели ─────────────────────────────────────────── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--grid);
+  border-radius: var(--radius);
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.card h2 {
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.card h3 {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--sub);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.field {
+  width: 100%;
+  background: var(--entry-bg);
+  color: var(--entry-fg);
+  border: 1px solid var(--entry-border);
+  border-radius: var(--radius-sm);
+  padding: 9px 11px;
+  font-size: 15px;
+  font-family: inherit;
+}
+.field:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+textarea.field {
+  resize: vertical;
+  min-height: 76px;
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.row > .field {
+  flex: 1 1 160px;
+}
+
+.btn {
+  border: 1px solid var(--grid);
+  background: var(--btn-util);
+  color: var(--btn-util-fg);
+  padding: 9px 15px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: 500;
+}
+.btn:hover {
+  filter: brightness(1.12);
+}
+.btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+.btn.primary {
+  background: var(--btn-op);
+  border-color: var(--btn-op);
+  color: var(--btn-op-fg);
+}
+
+.out {
+  background: var(--entry-bg);
+  border: 1px solid var(--entry-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 14px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  min-height: 40px;
+  line-height: 1.5;
+}
+.out.err {
+  color: var(--err);
+  border-color: var(--err);
+}
+
+/* Лейблы чекбоксов должны быть достаточно крупными для пальца:
+   WCAG 2.5.8 требует цель нажатия не меньше 24×24. */
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 2px 4px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* ── Плашка обновления PWA ───────────────────────────────── */
+.update-toast {
+  position: fixed;
+  left: 50%;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--card);
+  border: 1px solid var(--entry-border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  font-size: 13px;
+  z-index: 100;
+}
+
+/* ── Глобальные уведомления ───────────────────────────────── */
+.error-banner,
+.offline-badge {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  z-index: 120;
+}
+.error-banner {
+  top: 12px;
+  background: var(--card);
+  border: 1px solid #c0392b;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+}
+.offline-badge {
+  bottom: max(18px, env(safe-area-inset-bottom));
+  background: var(--btn-num-h);
+  border: 1px solid var(--entry-border);
+  color: var(--sub);
+  z-index: 110;
+}
+
+/* ── История ──────────────────────────────────────────────── */
+.history {
+  flex: 1 1 auto;
+  min-height: 120px;
+  overflow: auto;
+  margin-top: 8px;
+}
+.h-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: inherit;
+  border: none;
+  border-bottom: 1px solid var(--grid);
+  padding: 7px 9px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: ui-monospace, Consolas, monospace;
+  min-height: 24px;
+}
+.h-item:hover {
+  background: var(--btn-num-h);
+}
+.h-item:last-child {
+  border-bottom: none;
+}
+.h-expr {
+  color: var(--sub);
+}
+.h-res {
+  color: var(--fg);
+}
+
+/* ── Графики ──────────────────────────────────────────────── */
+.graph-wrap {
+  position: relative;
+}
+#graph-canvas {
+  width: 100%;
+  height: 340px;
+  display: block;
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  border: 1px solid var(--grid);
+  cursor: crosshair;
+  touch-action: none;
+}
+#graph-canvas:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* WCAG 2.5.8: цель нажатия не меньше 24×24. */
+.tab,
+.chip,
+.btn,
+.swatch,
+.ptable td[role='button'] {
+  min-height: 24px;
+  min-width: 24px;
+}
+.fn-row .btn,
+.fn-row .swatch {
+  min-height: 32px;
+  min-width: 32px;
+}
+.ptable td[role='button']:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: -3px;
+}
+.graph-readout {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: var(--card);
+  border: 1px solid var(--grid);
+  border-radius: var(--radius-sm);
+  padding: 5px 9px;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 12px;
+  pointer-events: none;
+  min-width: 96px;
+  white-space: pre-wrap;
+}
+
+.fn-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.fn-row {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  background: var(--entry-bg);
+  border: 1px solid var(--entry-border);
+  border-radius: var(--radius-sm);
+  padding: 6px 9px;
+}
+.fn-row input[type='text'] {
+  flex: 1 1 auto;
+  background: transparent;
+  border: none;
+  color: var(--entry-fg);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 14px;
+  min-width: 0;
+}
+.fn-row input[type='text']:focus {
+  outline: none;
+}
+.fn-row .swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+}
+
+/* ── Таблицы ──────────────────────────────────────────────── */
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-family: ui-monospace, Consolas, monospace;
+}
+table.data th,
+table.data td {
+  text-align: left;
+  padding: 5px 9px;
+  border-bottom: 1px solid var(--grid);
+}
+table.data th {
+  color: var(--sub);
+  font-weight: 600;
+}
+
+/* ── Периодическая таблица ────────────────────────────────── */
+.ptable-wrap {
+  overflow: auto;
+  max-height: 62vh;
+}
+.ptable {
+  border-collapse: collapse;
+  font-size: 14px;
+  font-family: inherit;
+}
+.ptable td {
+  border: 1px solid var(--grid);
+  width: 58px;
+  height: 58px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 4px;
+  color: #ffffff;
+  font-weight: 600;
+}
+.ptable td:hover {
+  outline: 2px solid var(--fg);
+  outline-offset: -2px;
+}
+.ptable td.sel {
+  outline: 3px solid var(--btn-op);
+  outline-offset: -3px;
+}
+.pt-blank {
+  visibility: hidden;
+}
+
+/* ── Прочее ───────────────────────────────────────────────── */
+.hint {
+  color: var(--sub);
+  font-size: 12px;
+  margin-top: 7px;
+  line-height: 1.5;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.chip {
+  border: 1px solid var(--grid);
+  background: transparent;
+  color: var(--sub);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.chip:hover {
+  background: var(--card);
+  color: var(--fg);
+}
+
+@media (max-width: 620px) {
+  .result {
+    font-size: 36px;
+  }
+  .pad {
+    grid-auto-rows: 54px;
+  }
+  .sci-pad {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Узкие экраны: история уходит под калькулятор, а не давит кнопки сбоку. */
+@media (max-width: 760px) {
+  .calc {
+    flex-direction: column;
+  }
+  .calc-right {
+    flex: 0 0 auto;
+    width: auto;
+  }
+  .calc-right .card {
+    flex: 0 0 auto;
+  }
+  .history {
+    max-height: 40vh;
+  }
+  .calc-rail {
+    display: none;
+  }
+}
+
+/* WCAG 2.1 / ISO 9241: уважение предпочтений пользователя */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

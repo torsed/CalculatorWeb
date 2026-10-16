@@ -1,0 +1,23 @@
+// Глобальный контракт приложения: модули регистрируются в window.CW.
+// Ровно настолько, чтобы `tsc --checkJs` проверял код, а не ругался на
+// самописный реестр модулей и общие для всего приложения типы.
+
+interface Window {
+  CW: any;
+  appInstance?: any;
+}
+
+declare var CW: any;
+
+// ExprError помечается собственным флагом, чтобы отличать свои ошибки
+// парсера от посторонних исключений. `code` — ключ локализации сообщения
+// (см. src/i18n/locales/core-*.js), `params` — подстановки в него.
+interface Error {
+  isExprError?: boolean;
+  code?: string;
+  params?: { [key: string]: any };
+}
+
+// Спецификация формулы на страницах-калькуляторах:
+// [подпись, имена входов, функция расчёта].
+type FormulaSpec = [string, string[], (values: any) => any[]];

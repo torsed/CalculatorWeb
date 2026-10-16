@@ -1,0 +1,31 @@
+# Зависимости
+node_modules/
+
+# Артефакты сборки и отчётов
+playwright-report/
+test-results/
+blob-report/
+coverage/
+
+# Кэш
+.cache/
+*.log
+
+# Скачанные вручную библиотеки (если есть локальные копии)
+# src/lib/*.min.js
+
+# Системный мусор Windows
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Локальное окружение
+.env
+.env.local
+# Скриншоты и отчёты диагностики
+shots/

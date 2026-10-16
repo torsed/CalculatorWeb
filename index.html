@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.exchangerate.host; font-src 'self';"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="Научный калькулятор: выражения, графики, матрицы, статистика, теория чисел, конвертер единиц, физика и химия. Работает офлайн."
+    />
+    <meta name="theme-color" content="#1c1c1e" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Калькулятор</title>
+    <link rel="stylesheet" href="src/styles/app.css" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="src/icons/icon-192.png" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔢</text></svg>"
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#page-calc">Перейти к калькулятору</a>
+    <noscript>
+      <p class="noscript-msg">
+        Калькулятору нужен включённый JavaScript. Без него вычисления невозможны. / This calculator
+        requires JavaScript to work.
+      </p>
+    </noscript>
+    <div id="app"></div>
+
+    <!-- Порядок важен: модули складываются в window.CW и зависят друг от друга.
+     НЕ переводить на ES-модули (import/export): по file:// браузер их не грузит,
+     а приложение обязано работать при простом открытии файла. Проверяется
+     тестом «app works when opened as a plain file».
+     defer сохраняет порядок классических скриптов (в т.ч. по file://) и не
+     блокирует отрисовку. -->
+    <!-- Ядро: чистая математика, без DOM -->
+    <script defer src="src/core/format.js"></script>
+    <script defer src="src/core/parser.js"></script>
+    <script defer src="src/core/numtheory.js"></script>
+    <script defer src="src/core/stats.js"></script>
+    <script defer src="src/core/matrix.js"></script>
+    <script defer src="src/core/solver.js"></script>
+    <script defer src="src/core/polynomial.js"></script>
+
+    <!-- Интернационализация: ядро + каталоги строк -->
+    <script defer src="src/i18n/i18n.js"></script>
+    <script defer src="src/i18n/locales/common.js"></script>
+    <script defer src="src/i18n/locales/units.js"></script>
+    <script defer src="src/i18n/locales/calc.js"></script>
+    <script defer src="src/i18n/locales/graph.js"></script>
+    <script defer src="src/i18n/locales/conv.js"></script>
+    <script defer src="src/i18n/locales/stats.js"></script>
+    <script defer src="src/i18n/locales/matrix.js"></script>
+    <script defer src="src/i18n/locales/numtheory.js"></script>
+    <script defer src="src/i18n/locales/solver.js"></script>
+    <script defer src="src/i18n/locales/phys.js"></script>
+    <script defer src="src/i18n/locales/chem.js"></script>
+    <script defer src="src/i18n/locales/geom.js"></script>
+    <script defer src="src/i18n/locales/finance.js"></script>
+    <script defer src="src/i18n/locales/util.js"></script>
+    <script defer src="src/i18n/locales/prob.js"></script>
+    <script defer src="src/i18n/locales/prog.js"></script>
+    <script defer src="src/i18n/locales/gen.js"></script>
+    <script defer src="src/i18n/locales/core-parser.js"></script>
+    <script defer src="src/i18n/locales/core-numtheory.js"></script>
+    <script defer src="src/i18n/locales/core-matrix.js"></script>
+    <script defer src="src/i18n/locales/core-polynomial.js"></script>
+    <script defer src="src/i18n/locales/core-solver.js"></script>
+    <script defer src="src/i18n/locales/core-stats.js"></script>
+
+    <!-- Состояние -->
+    <script defer src="src/state/history.js"></script>
+
+    <!-- Представление -->
+    <script defer src="src/ui/calcState.js"></script>
+    <script defer src="src/ui/calcView.js"></script>
+    <script defer src="src/ui/graphView.js"></script>
+    <!-- Общие helpers страниц — до остальных pages/* -->
+    <script defer src="src/ui/pages/helpers.js"></script>
+    <script defer src="src/ui/pages/conv.js"></script>
+    <script defer src="src/ui/pages/stats.js"></script>
+    <script defer src="src/ui/pages/matrix.js"></script>
+    <script defer src="src/ui/pages/numtheory.js"></script>
+    <script defer src="src/ui/pages/solver.js"></script>
+    <script defer src="src/ui/pages/phys.js"></script>
+    <script defer src="src/ui/pages/chem.js"></script>
+    <script defer src="src/ui/pages/geom.js"></script>
+    <script defer src="src/ui/pages/finance.js"></script>
+    <script defer src="src/ui/pages/util.js"></script>
+    <script defer src="src/ui/pages/prob.js"></script>
+    <script defer src="src/ui/pages/prog.js"></script>
+    <script defer src="src/ui/pages/gen.js"></script>
+    <script defer src="src/ui/app.js"></script>
+    <!-- Отложенные скрипты выполняются строго до DOMContentLoaded,
+         поэтому старт приложения и регистрация SW — в отдельных файлах
+         (нужно для CSP без 'unsafe-inline'). Работает и по file://. -->
+    <script defer src="src/ui/bootstrap.js"></script>
+    <script defer src="src/ui/sw-register.js"></script>
+  </body>
+</html>

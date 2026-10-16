@@ -1,0 +1,11 @@
+* text=auto eol=lf
+
+# Windows-скрипты должны остаться с CRLF.
+*.bat text eol=crlf
+
+# Бинарные файлы — без нормализации переводов строк.
+*.png binary
+*.ico binary
+*.jpg binary
+*.woff binary
+*.woff2 binary

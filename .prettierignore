@@ -1,0 +1,5 @@
+node_modules/
+playwright-report/
+test-results/
+# Вендорный код из node_modules, форматировать не нужно.
+src/lib/*.min.js
