@@ -122,7 +122,7 @@
       'Периодическая таблица элементов. Навигация стрелками невозможна, используйте Tab и Enter.',
     'chem.ptable.elemAria': '{name} ({symbol}), номер {z}, масса {mass}',
     'chem.hint.categories':
-      'Оранжевый — s-блок, синий — p-блок, серый — d-блок, тусклый — f-блок. Клик по элементу показывает детали.',
+      'Красный — s-блок, синий — p-блок, жёлтый — d-блок, фиолетовый — f-блок. Клик по элементу показывает детали.',
 
     'chem.el.H': 'Водород',
     'chem.el.He': 'Гелий',
@@ -363,7 +363,7 @@
       'Periodic table of elements. Arrow-key navigation is not available, use Tab and Enter.',
     'chem.ptable.elemAria': '{name} ({symbol}), number {z}, mass {mass}',
     'chem.hint.categories':
-      'Orange — s-block, blue — p-block, grey — d-block, dim — f-block. Clicking an element shows details.',
+      'Red — s-block, blue — p-block, yellow — d-block, purple — f-block. Clicking an element shows details.',
 
     'chem.el.H': 'Hydrogen',
     'chem.el.He': 'Helium',

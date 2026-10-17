@@ -8,7 +8,7 @@
  * работает и по адресу http://localhost:8787/, и в подпапке GitHub Pages
  * (https://<user>.github.io/<repo>/).
  */
-const CACHE_NAME = 'cw-v8';
+const CACHE_NAME = 'cw-v9';
 const ASSET_PATHS = [
   '.',
   'index.html',

@@ -303,6 +303,13 @@ window.CW.graph = (function () {
     return { x: wx, y: wy };
   };
 
+  /** Подписи X у краёв канваса обрезались пополам («-10» → «0»): центр
+   *  подписи треугольника прижимаем внутрь так, чтобы текст был целиком. */
+  function clampTickX(ctx, label, px, w) {
+    const half = ctx.measureText(label).width / 2;
+    return Math.min(Math.max(px, half + 2), w - half - 2);
+  }
+
   GraphView.prototype.render = function () {
     const ctx = this.ctx;
     const dim = this._resize();
@@ -345,7 +352,7 @@ window.CW.graph = (function () {
         ctx.lineTo(px, h);
         ctx.stroke();
         ctx.textAlign = 'center';
-        ctx.fillText(formatTick(x, 1), px, h - 4);
+        ctx.fillText(formatTick(x, 1), clampTickX(ctx, formatTick(x, 1), px, w), h - 4);
       }
     } else {
       for (let x = x0; x <= this.xmax; x += xStep) {
@@ -355,7 +362,7 @@ window.CW.graph = (function () {
         ctx.lineTo(px, h);
         ctx.stroke();
         ctx.textAlign = 'center';
-        ctx.fillText(formatTick(x, xStep), px, h - 4);
+        ctx.fillText(formatTick(x, xStep), clampTickX(ctx, formatTick(x, xStep), px, w), h - 4);
       }
     }
 

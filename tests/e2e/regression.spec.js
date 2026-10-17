@@ -98,6 +98,37 @@ test.describe('Regressions and new features', () => {
     await expect(hint).toContainText('сумма счёта');
   });
 
+  test('mobile: keypad not covered by history, display fully visible', async ({ page }) => {
+    // Регресс: при height:100% у .calc на узких экранах колонки сжимались,
+    // контент вылезал из контейнера, и история перекрывала дисплей и клавиатуру.
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.waitForTimeout(100);
+    const left = await page.locator('.calc-left').boundingBox();
+    const right = await page.locator('.calc-right').boundingBox();
+    // Калькулятор целиком выше панели истории, без наложения.
+    expect(left.y + left.height).toBeLessThanOrEqual(right.y + 2);
+    // Основной пад видим и имеет ненулевую высоту.
+    const pad = page.locator('.calc-left .pad:not(.sci-pad)');
+    await expect(pad).toBeVisible();
+    const pb = await pad.boundingBox();
+    expect(pb.height).toBeGreaterThan(150);
+    // Дисплей не должен вылезать за пределы .calc-left.
+    const display = await page.locator('.calc-left .display-col').boundingBox();
+    expect(display.y).toBeGreaterThanOrEqual(left.y - 2);
+    expect(display.y + display.height).toBeLessThanOrEqual(left.y + left.height + 2);
+  });
+
+  test('graph: coordinate readout hidden when nothing to show', async ({ page }) => {
+    // Регресс: пустая рамка readout постоянно висела в правом верхнем углу.
+    await page.click('button.tab:has-text("График")');
+    const readout = page.locator('.graph-readout');
+    await expect(readout).toBeHidden();
+    // Курсор над графиком — readout показывает координаты.
+    const box = await page.locator('#graph-canvas').boundingBox();
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await expect(readout).toBeVisible();
+  });
+
   test('util: inverse solve for BMI height stays positive', async ({ page }) => {
     await page.click('button.tab:has-text("Быт")');
     await page.locator('#page-util select.field').selectOption({ index: 0 });

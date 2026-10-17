@@ -434,6 +434,8 @@ textarea.field {
   word-break: break-word;
   min-height: 40px;
   line-height: 1.5;
+  /* Пустая рамка результата не должна прилипать к строке полей ввода. */
+  margin-top: 8px;
 }
 .out.err,
 .sys-out.err {
@@ -583,6 +585,10 @@ textarea.field {
   pointer-events: none;
   min-width: 96px;
   white-space: pre-wrap;
+}
+/* Пустое окошко (курсор вне графика) не должно висеть рамкой на канвасе. */
+.graph-readout:empty {
+  display: none !important;
 }
 
 .fn-list {
@@ -739,10 +745,14 @@ table.data th {
   }
 }
 
-/* Узкие экраны: история уходит под калькулятор, а не давит кнопки сбоку. */
+/* Узкие экраны: история уходит под калькулятор, а не давит кнопки сбоку.
+   Высота .calc — по контенту: при height:100% колонки сжимаются, контент
+   вылезает из контейнера, и история (позже в DOM) перекрывает дисплей и
+   клавиатуру; страница сама скроллит (.page { overflow: auto }). */
 @media (max-width: 760px) {
   .calc {
     flex-direction: column;
+    height: auto;
   }
   .calc-right {
     flex: 0 0 auto;
