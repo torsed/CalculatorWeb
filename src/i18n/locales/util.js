@@ -16,8 +16,17 @@
     'util.err.undefined': 'Проверьте данные: результат не определён (деление на ноль?)',
     'util.err.solve':
       'Формула вычисляет «{calc}». Не удалось решить относительно «{unknown}» — проверьте данные.',
-    'util.hint':
-      'Проценты как 5..100 (а не 0.05..1), вес в кг, рост в м. Оставьте пустым поле с искомой величиной — формула решится относительно него; если заполнены все поля, пересчитывается первая величина.',
+    // Общая подсказка (одинакова для всех операций) + своя строка на каждую
+    // операцию: при смене операции hint обновляется вместе с полями.
+    'util.hint.common':
+      'Оставьте пустым поле с искомой величиной — формула решится относительно него; если заполнены все поля, пересчитывается первая величина. Проценты как 5..100 (а не 0.05..1).',
+    'util.hint.bmi': 'm — вес в килограммах, h — рост в метрах.',
+    'util.hint.tip': 'S — сумма счёта в ₽, p — процент чаевых.',
+    'util.hint.percent': 'A — число, p — процент.',
+    'util.hint.change': 'a — старое значение, b — новое; результат — рост в процентах.',
+    'util.hint.fuel': 'V — потраченное топливо в литрах, L — путь в километрах.',
+    'util.hint.time': 'S — путь в километрах, V — средняя скорость в км/ч.',
+    'util.hint.gas': 'Q — расход в л/100 км, S — путь в км, P — цена топлива в ₽/л.',
   });
   i18n.add('en', {
     'util.fn.bmi': 'Body mass index  BMI = m / h²',
@@ -33,7 +42,16 @@
     'util.err.undefined': 'Check the data: the result is undefined (division by zero?)',
     'util.err.solve':
       'The formula computes «{calc}». Could not solve for «{unknown}» — check the data.',
-    'util.hint':
-      'Percentages as 5..100 (not 0.05..1), weight in kg, height in m. Leave the field with the unknown value empty — the formula will be solved for it; if every field is filled, the first value is recomputed.',
+    // Common hint (same for all formulas) + a per-formula line: switching the
+    // operation updates the hint together with the input fields.
+    'util.hint.common':
+      'Leave the field with the unknown value empty — the formula will be solved for it; if every field is filled, the first value is recomputed. Percentages as 5..100 (not 0.05..1).',
+    'util.hint.bmi': 'm — weight in kilograms, h — height in meters.',
+    'util.hint.tip': 'S — bill amount in ₽, p — tip percentage.',
+    'util.hint.percent': 'A — the number, p — the percentage.',
+    'util.hint.change': 'a — the old value, b — the new one; the result is growth in percent.',
+    'util.hint.fuel': 'V — fuel used in liters, L — distance in kilometers.',
+    'util.hint.time': 'S — distance in kilometers, V — average speed in km/h.',
+    'util.hint.gas': 'Q — consumption in l/100 km, S — distance in km, P — fuel price in ₽/l.',
   });
 })();

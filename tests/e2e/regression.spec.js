@@ -86,6 +86,18 @@ test.describe('Regressions and new features', () => {
     await expect(page.locator('#page-util h2')).toHaveText('Быт');
   });
 
+  test('util: bottom hint follows the selected formula', async ({ page }) => {
+    await page.click('button.tab:has-text("Быт")');
+    const hint = page.locator('#page-util .hint');
+    // По умолчанию BMI — подсказка про вес и рост.
+    await expect(hint).toContainText('вес в килограммах');
+    // Смена операции обновляет подсказку вместе с полями.
+    await page.locator('#page-util select.field').selectOption({ index: 4 }); // расход топлива
+    await expect(hint).toContainText('топливо в литрах');
+    await page.locator('#page-util select.field').selectOption({ index: 1 }); // чаевые
+    await expect(hint).toContainText('сумма счёта');
+  });
+
   test('util: inverse solve for BMI height stays positive', async ({ page }) => {
     await page.click('button.tab:has-text("Быт")');
     await page.locator('#page-util select.field').selectOption({ index: 0 });

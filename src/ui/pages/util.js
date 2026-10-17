@@ -124,6 +124,16 @@ window.CW.pages = window.CW.pages || {};
     card.appendChild(row);
     const out = el('div', { cls: 'out', attrs: { role: 'status', 'aria-live': 'polite' } });
     card.appendChild(out);
+    // Хинт создаётся до первого refreshInputs(): та обновляет и его.
+    const hint = el('div', 'hint');
+
+    // Ключи подсказок по индексу операции (UTIL_FUNCS): при смене операции
+    // текст внизу примечания меняется вместе с полями ввода.
+    const HINT_KEYS = ['bmi', 'tip', 'percent', 'change', 'fuel', 'time', 'gas'];
+    function refreshHint() {
+      hint.textContent =
+        t('util.hint.' + HINT_KEYS[parseInt(sel.value, 10)]) + ' ' + t('util.hint.common');
+    }
 
     function refreshInputs() {
       const keys = UTIL_FUNCS[parseInt(sel.value, 10)][1];
@@ -137,6 +147,7 @@ window.CW.pages = window.CW.pages || {};
           f.value = '';
         }
       });
+      refreshHint();
     }
     sel.onchange = refreshInputs;
     refreshInputs();
@@ -189,7 +200,6 @@ window.CW.pages = window.CW.pages || {};
     brow.appendChild(btn);
     card.appendChild(brow);
 
-    const hint = el('div', 'hint', t('util.hint'));
     card.appendChild(hint);
     page.appendChild(card);
   }
