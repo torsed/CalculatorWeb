@@ -218,7 +218,7 @@ window.CW.pages = window.CW.pages || {};
     page.innerHTML = '';
 
     const card = el('div', 'card');
-    card.appendChild(el('h2', null, t('common.brand')));
+    card.appendChild(el('h2', null, t('common.tab.prog')));
     const sel = el('select', 'field');
     PROG_FUNCS.forEach(function (f, i) {
       const o = el('option', null, f[0]);

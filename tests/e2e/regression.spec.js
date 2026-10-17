@@ -81,6 +81,23 @@ test.describe('Regressions and new features', () => {
     await expect(page.locator('#page-util .out')).toContainText('67.375');
   });
 
+  test('util: heading shows the tab name, not the brand', async ({ page }) => {
+    await page.click('button.tab:has-text("Быт")');
+    await expect(page.locator('#page-util h2')).toHaveText('Быт');
+  });
+
+  test('util: inverse solve for BMI height stays positive', async ({ page }) => {
+    await page.click('button.tab:has-text("Быт")');
+    await page.locator('#page-util select.field').selectOption({ index: 0 });
+    const inputs = page.locator('#page-util input.field');
+    await inputs.nth(0).fill('22'); // BMI
+    await inputs.nth(1).fill('70'); // масса
+    await inputs.nth(2).fill(''); // рост — искомая
+    await page.click('#page-util button.btn.primary:has-text("Решить")');
+    // h² даёт и отрицательный корень — ожидаем положительный рост.
+    await expect(page.locator('#page-util .out')).toContainText('h = 1.78377');
+  });
+
   test('phys: Ampère force with angle α', async ({ page }) => {
     await page.click('button.tab:has-text("Физика")');
     await page

@@ -85,7 +85,7 @@ window.CW.pages = window.CW.pages || {};
     page.innerHTML = '';
 
     const card = el('div', 'card');
-    card.appendChild(el('h2', null, t('common.brand')));
+    card.appendChild(el('h2', null, t('common.tab.util')));
     const sel = el('select', 'field');
     UTIL_FUNCS.forEach(function (f, i) {
       const o = el('option', null, f[0]);
@@ -150,7 +150,8 @@ window.CW.pages = window.CW.pages || {};
           if (typeof res[1] === 'number' && !Number.isFinite(res[1])) {
             throw { message: t('util.err.undefined') };
           }
-          out.textContent = res[0] + ' = ' + F.fmt(res[1]) + ' ' + U(res[2]);
+          const unit = U(res[2]);
+          out.textContent = res[0] + ' = ' + F.fmt(res[1]) + (unit ? ' ' + unit : '');
         } else {
           const x = H.solveInverse(spec, vals, emptyKey);
           if (!Number.isFinite(x)) {
