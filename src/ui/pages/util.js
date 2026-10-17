@@ -17,6 +17,10 @@ window.CW.pages = window.CW.pages || {};
   // ── Бытовые ─────────────────────────────────────────────
   // Входы в привычных бытовых единицах: вес в кг, рост в см, сумма в ₽,
   // проценты как 5..100 (а не 0.05..1 — для понятности).
+  // Формат элемента: [подпись, [ключи полей], функция, единицы полей?].
+  // Первый ключ — величина, которую формула считает напрямую; её единица
+  // задана в возврате функции. spec[3] — единицы остальных полей, чтобы
+  // обратный расчёт тоже показывал единицу измерения.
   /** @type {FormulaSpec[]} */
   const UTIL_FUNCS = [
     [
@@ -26,6 +30,7 @@ window.CW.pages = window.CW.pages || {};
         // m в кг, h в метрах. Категории: <18.5 дефицит, 18.5–25 норма.
         return ['BMI', v.m / (v.h * v.h), 'кг/м²'];
       },
+      { m: 'кг', h: 'м' },
     ],
     [
       t('util.fn.tip'),
@@ -34,6 +39,7 @@ window.CW.pages = window.CW.pages || {};
         // S — сумма счёта, p — процент чаевых (10 = 10%).
         return ['T', (v.S * v.p) / 100, '₽'];
       },
+      { S: '₽', p: '%' },
     ],
     [
       t('util.fn.percent'),
@@ -42,6 +48,7 @@ window.CW.pages = window.CW.pages || {};
         // A — число, p — процент (10 = 10%).
         return ['X', (v.A * v.p) / 100, ''];
       },
+      { p: '%' },
     ],
     [
       t('util.fn.change'),
@@ -53,6 +60,7 @@ window.CW.pages = window.CW.pages || {};
         }
         return ['Δ%', ((v.b - v.a) / v.a) * 100, '%'];
       },
+      { p: '%' },
     ],
     [
       t('util.fn.fuel'),
@@ -61,6 +69,7 @@ window.CW.pages = window.CW.pages || {};
         // V — потраченное топливо в л, L — пройденный путь в км. → л/100 км.
         return ['Q', (v.V / v.L) * 100, 'л/100 км'];
       },
+      { V: 'л', L: 'км' },
     ],
     [
       t('util.fn.time'),
@@ -69,6 +78,7 @@ window.CW.pages = window.CW.pages || {};
         // S — путь в км, V — средняя скорость в км/ч. → часы.
         return ['t', v.S / v.V, 'ч'];
       },
+      { S: 'км', V: 'км/ч' },
     ],
     [
       t('util.fn.gas'),
@@ -77,6 +87,7 @@ window.CW.pages = window.CW.pages || {};
         // Q — л/100 км, S — км, P — ₽/л.
         return ['C', (v.Q / 100) * v.S * v.P, '₽'];
       },
+      { Q: 'л/100 км', S: 'км', P: '₽/л' },
     ],
   ];
 
@@ -159,7 +170,9 @@ window.CW.pages = window.CW.pages || {};
               message: t('util.err.solve', { calc: keys[0], unknown: emptyKey }),
             };
           }
-          out.textContent = emptyKey + ' = ' + F.fmt(x, 6);
+          const units = spec[3] || {};
+          const unit = U(units[emptyKey] || '');
+          out.textContent = emptyKey + ' = ' + F.fmt(x, 6) + (unit ? ' ' + unit : '');
         }
         out.classList.remove('err');
       } catch (e) {

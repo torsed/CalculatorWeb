@@ -78,7 +78,7 @@ test.describe('Regressions and new features', () => {
     await inputs.nth(2).fill('1.75'); // рост
     await page.click('#page-util button.btn.primary:has-text("Решить")');
     await expect(page.locator('#page-util .out')).toContainText('m =');
-    await expect(page.locator('#page-util .out')).toContainText('67.375');
+    await expect(page.locator('#page-util .out')).toContainText('67.375 кг');
   });
 
   test('util: heading shows the tab name, not the brand', async ({ page }) => {
@@ -95,7 +95,7 @@ test.describe('Regressions and new features', () => {
     await inputs.nth(2).fill(''); // рост — искомая
     await page.click('#page-util button.btn.primary:has-text("Решить")');
     // h² даёт и отрицательный корень — ожидаем положительный рост.
-    await expect(page.locator('#page-util .out')).toContainText('h = 1.78377');
+    await expect(page.locator('#page-util .out')).toContainText('h = 1.78377 м');
   });
 
   test('phys: Ampère force with angle α', async ({ page }) => {
