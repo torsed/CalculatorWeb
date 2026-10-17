@@ -12,12 +12,12 @@
     'util.fn.gas': 'Стоимость бензина на поездку  C = (Q/100)·S·P',
     'util.param': 'Параметр {n}',
     'util.err.baseZero': 'Базовое значение не может быть нулём',
-    'util.err.oneEmpty': 'Оставьте пустым ровно одно поле — искомую величину',
+    'util.err.tooFew': 'Заполните все поля, кроме искомого — его оставьте пустым',
     'util.err.undefined': 'Проверьте данные: результат не определён (деление на ноль?)',
     'util.err.solve':
       'Формула вычисляет «{calc}». Не удалось решить относительно «{unknown}» — проверьте данные.',
     'util.hint':
-      'Проценты как 5..100 (а не 0.05..1), вес в кг, рост в м. Оставьте пустым поле с искомой величиной — формула решится относительно него.',
+      'Проценты как 5..100 (а не 0.05..1), вес в кг, рост в м. Оставьте пустым поле с искомой величиной — формула решится относительно него; если заполнены все поля, пересчитывается первая величина.',
   });
   i18n.add('en', {
     'util.fn.bmi': 'Body mass index  BMI = m / h²',
@@ -29,11 +29,11 @@
     'util.fn.gas': 'Fuel cost per trip  C = (Q/100)·S·P',
     'util.param': 'Parameter {n}',
     'util.err.baseZero': 'The base value cannot be zero',
-    'util.err.oneEmpty': 'Leave exactly one field empty — the value you are solving for',
+    'util.err.tooFew': 'Fill in every field except the unknown one — leave that one empty',
     'util.err.undefined': 'Check the data: the result is undefined (division by zero?)',
     'util.err.solve':
       'The formula computes «{calc}». Could not solve for «{unknown}» — check the data.',
     'util.hint':
-      'Percentages as 5..100 (not 0.05..1), weight in kg, height in m. Leave the field with the unknown value empty — the formula will be solved for it.',
+      'Percentages as 5..100 (not 0.05..1), weight in kg, height in m. Leave the field with the unknown value empty — the formula will be solved for it; if every field is filled, the first value is recomputed.',
   });
 })();

@@ -152,10 +152,12 @@ window.CW.pages = window.CW.pages || {};
         const missing = keys.filter(function (k) {
           return inputs[keys.indexOf(k)].value.trim() === '';
         });
-        if (missing.length !== 1) {
-          throw { message: t('util.err.oneEmpty') };
+        if (missing.length > 1) {
+          throw { message: t('util.err.tooFew') };
         }
-        const emptyKey = missing[0];
+        // Нет пустых полей — считаем прямую формулу (искомое — первое поле).
+        // Одно пустое — прямая, если пусто первое поле, иначе обратная.
+        const emptyKey = missing.length === 0 ? keys[0] : missing[0];
         if (emptyKey === keys[0]) {
           const res = spec[2](vals);
           if (typeof res[1] === 'number' && !Number.isFinite(res[1])) {

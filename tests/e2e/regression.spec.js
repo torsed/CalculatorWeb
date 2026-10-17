@@ -98,6 +98,22 @@ test.describe('Regressions and new features', () => {
     await expect(page.locator('#page-util .out')).toContainText('h = 1.78377 м');
   });
 
+  test('util: all fields filled recomputes the result', async ({ page }) => {
+    await page.click('button.tab:has-text("Быт")');
+    const card = page.locator('#page-util .card');
+    await card.locator('select.field').selectOption({
+      label: 'Процент от числа  X = A·p / 100',
+    });
+    const inputs = card.locator('input.field:visible');
+    await inputs.nth(0).fill('999'); // X — заведомо неверное значение
+    await inputs.nth(1).fill('200'); // A
+    await inputs.nth(2).fill('15'); // p
+    await card.locator('button.btn.primary').click();
+    // Все поля заполнены — пересчитывается первая величина, а не ошибка.
+    await expect(card.locator('.out')).toContainText('X = 30');
+    await expect(card.locator('.out')).not.toHaveClass(/err/);
+  });
+
   test('phys: Ampère force with angle α', async ({ page }) => {
     await page.click('button.tab:has-text("Физика")');
     await page
