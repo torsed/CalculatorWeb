@@ -1,0 +1,71 @@
+/* Строки вкладки «Анализ». */
+'use strict';
+(function () {
+  const i18n = window.CW.i18n;
+  i18n.add('ru', {
+    'analysis.formula': 'Операция',
+    'analysis.op.deriv': 'Производная  f′(x₀)',
+    'analysis.op.deriv2': 'Вторая производная  f″(x₀)',
+    'analysis.op.tangent': 'Касательная в точке',
+    'analysis.op.integral': 'Определённый интеграл  ∫ f dx',
+    'analysis.op.limit': 'Предел при x → x₀',
+    'analysis.op.sum': 'Сумма  Σ f(k)',
+    'analysis.op.product': 'Произведение  Π f(k)',
+    'analysis.op.extrema': 'Экстремумы на отрезке',
+    'analysis.expr': 'Функция f(x)',
+    'analysis.x0': 'Точка x₀',
+    'analysis.from': 'От',
+    'analysis.to': 'До',
+    'analysis.deg': ' Градусы (иначе радианы)',
+    'analysis.result.deriv': 'f′({x0}) = {v}',
+    'analysis.result.deriv2': 'f″({x0}) = {v}',
+    'analysis.result.tangent': 'y = {m}·x {sign} {b}',
+    'analysis.result.integral': '∫ от {a} до {b} f(x) dx = {v}',
+    'analysis.result.limit': 'lim f(x) при x → {x0} = {v}',
+    'analysis.noLimit': 'Предел не существует (или расходится)',
+    'analysis.result.sum': 'Σ от {a} до {b} f = {v}',
+    'analysis.result.product': 'Π от {a} до {b} f = {v}',
+    'analysis.result.extrema': 'Экстремумы на [{a}; {b}]:',
+    'analysis.extreme': '{kind} при x = {x}, y = {y}',
+    'analysis.min': 'минимум',
+    'analysis.max': 'максимум',
+    'analysis.none': 'Не найдено',
+    'analysis.err.number': 'Проверьте числовые поля (x₀ / От / До)',
+    'analysis.hint':
+      'Численные методы: производная — центральная разность, интеграл — Симпсон, ' +
+      'экстремумы — по смене знака производной. Для полярных выражений используйте радианы.',
+  });
+  i18n.add('en', {
+    'analysis.formula': 'Operation',
+    'analysis.op.deriv': 'Derivative  f′(x₀)',
+    'analysis.op.deriv2': 'Second derivative  f″(x₀)',
+    'analysis.op.tangent': 'Tangent line at a point',
+    'analysis.op.integral': 'Definite integral  ∫ f dx',
+    'analysis.op.limit': 'Limit as x → x₀',
+    'analysis.op.sum': 'Sum  Σ f(k)',
+    'analysis.op.product': 'Product  Π f(k)',
+    'analysis.op.extrema': 'Extrema on an interval',
+    'analysis.expr': 'Function f(x)',
+    'analysis.x0': 'Point x₀',
+    'analysis.from': 'From',
+    'analysis.to': 'To',
+    'analysis.deg': ' Degrees (otherwise radians)',
+    'analysis.result.deriv': 'f′({x0}) = {v}',
+    'analysis.result.deriv2': 'f″({x0}) = {v}',
+    'analysis.result.tangent': 'y = {m}·x {sign} {b}',
+    'analysis.result.integral': '∫ from {a} to {b} f(x) dx = {v}',
+    'analysis.result.limit': 'lim f(x) as x → {x0} = {v}',
+    'analysis.noLimit': 'The limit does not exist (or diverges)',
+    'analysis.result.sum': 'Σ from {a} to {b} f = {v}',
+    'analysis.result.product': 'Π from {a} to {b} f = {v}',
+    'analysis.result.extrema': 'Extrema on [{a}; {b}]:',
+    'analysis.extreme': '{kind} at x = {x}, y = {y}',
+    'analysis.min': 'minimum',
+    'analysis.max': 'maximum',
+    'analysis.none': 'Not found',
+    'analysis.err.number': 'Check the numeric fields (x₀ / From / To)',
+    'analysis.hint':
+      'Numeric methods: derivative — central difference, integral — Simpson, ' +
+      'extrema — by sign change of the derivative. Use radians for periodic expressions.',
+  });
+})();

@@ -188,6 +188,34 @@ window.CW.calcView = (function () {
     right.appendChild(ansBtn);
     right.appendChild(mrBtn);
 
+    const copyBtn = el('button', 'chip', '⧉ ' + t('calc.copy'));
+    copyBtn.title = t('calc.copy');
+    copyBtn.setAttribute('aria-label', t('calc.copy'));
+    copyBtn.onclick = function () {
+      const text = self.st.display();
+      const done = function () {
+        copyBtn.textContent = '✓ ' + t('calc.copied');
+        setTimeout(function () {
+          copyBtn.textContent = '⧉ ' + t('calc.copy');
+        }, 1200);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () {
+          self._fallbackCopy(text, done);
+        });
+      } else {
+        self._fallbackCopy(text, done);
+      }
+    };
+    const helpBtn = el('button', 'chip', '?');
+    helpBtn.title = t('calc.shortcuts');
+    helpBtn.setAttribute('aria-label', t('calc.shortcuts'));
+    helpBtn.onclick = function () {
+      self._showShortcuts();
+    };
+    right.appendChild(copyBtn);
+    right.appendChild(helpBtn);
+
     modes.appendChild(this.degBtn);
     modes.appendChild(sciBtn);
     modes.appendChild(progBtn);
@@ -315,6 +343,18 @@ window.CW.calcView = (function () {
       rightCol.classList.remove('narrow');
     };
     hrow.appendChild(hfilter);
+    const favLabel = el('label', 'check-row');
+    favLabel.style.whiteSpace = 'nowrap';
+    favLabel.style.fontSize = '12px';
+    const favBox = el('input');
+    favBox.type = 'checkbox';
+    favBox.onchange = function () {
+      self._renderHistory();
+    };
+    favLabel.appendChild(favBox);
+    favLabel.appendChild(document.createTextNode(' ' + t('calc.favOnly')));
+    this.favBox = favBox;
+    hrow.appendChild(favLabel);
     hrow.appendChild(hexp);
     hrow.appendChild(himp);
     hrow.appendChild(hfile);
@@ -325,6 +365,34 @@ window.CW.calcView = (function () {
     hcard.appendChild(this.histEl);
     this.hfilter = hfilter;
     rightCol.appendChild(hcard);
+
+    // ── Переменные и функции ────────────────────────────────
+    const dcard = el('div', 'card');
+    dcard.appendChild(el('h2', null, t('calc.defsTitle')));
+    const drow = el('div', 'row');
+    this.defInput = el('input', 'field');
+    this.defInput.type = 'text';
+    this.defInput.placeholder = t('calc.defsEmpty');
+    this.defInput.setAttribute('aria-label', t('calc.defsTitle'));
+    const dadd = el('button', 'btn', '+');
+    dadd.setAttribute('aria-label', t('calc.defsTitle'));
+    dadd.onclick = function () {
+      self._addDef(self.defInput.value);
+    };
+    this.defInput.onkeydown = function (ev) {
+      if (ev.key === 'Enter') {
+        self._addDef(self.defInput.value);
+      }
+    };
+    drow.appendChild(this.defInput);
+    drow.appendChild(dadd);
+    dcard.appendChild(drow);
+    this.defListEl = el('div', 'defs');
+    dcard.appendChild(this.defListEl);
+    dcard.appendChild(el('div', 'hint', t('calc.defsHint')));
+    rightCol.appendChild(dcard);
+    this._renderDefs();
+
     rightCol.appendChild(railBtn);
 
     wrap.appendChild(leftCol);
@@ -602,9 +670,13 @@ window.CW.calcView = (function () {
       return;
     }
     const q = (this.hfilter.value || '').toLowerCase();
+    const favOnly = this.favBox && this.favBox.checked;
     const items = this.history
       .all()
       .filter(function (e) {
+        if (favOnly && !e.fav) {
+          return false;
+        }
         if (!q) {
           return true;
         }
@@ -618,6 +690,7 @@ window.CW.calcView = (function () {
       return;
     }
     items.forEach(function (e) {
+      const rowWrap = el('div', 'h-item-wrap');
       // WCAG 2.1.1 / 4.1.2: история — настоящие кнопки, работают с клавиатуры.
       const d = el('button', 'h-item');
       d.setAttribute('aria-label', t('calc.histItemAria', { expr: e.expr, result: e.result }));
@@ -631,7 +704,18 @@ window.CW.calcView = (function () {
         self.st.err = null;
         self.render();
       };
-      self.histEl.appendChild(d);
+      const star = el('button', 'h-fav' + (e.fav ? ' on' : ''), e.fav ? '★' : '☆');
+      star.title = e.fav ? t('calc.favRemove') : t('calc.favAdd');
+      star.setAttribute('aria-label', e.fav ? t('calc.favRemove') : t('calc.favAdd'));
+      star.setAttribute('aria-pressed', e.fav ? 'true' : 'false');
+      star.onclick = function (ev) {
+        ev.stopPropagation();
+        self.history.toggleFav(e.expr, e.result);
+        self._renderHistory();
+      };
+      rowWrap.appendChild(d);
+      rowWrap.appendChild(star);
+      self.histEl.appendChild(rowWrap);
     });
   };
 
@@ -648,6 +732,201 @@ window.CW.calcView = (function () {
     setTimeout(function () {
       URL.revokeObjectURL(a.href);
     }, 1000);
+  };
+
+  /** Копирование без Clipboad API (старые браузеры, http://). */
+  CalcView.prototype._fallbackCopy = function (text, done) {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      done();
+    } catch (e) {
+      // Копирование не критично — молча выходим.
+    }
+  };
+
+  /** Модальное окно со списком горячих клавиш. */
+  CalcView.prototype._showShortcuts = function () {
+    const overlay = el('div', 'modal-overlay');
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-label', t('calc.shortcutsTitle'));
+    const box = el('div', 'modal-box');
+    box.appendChild(el('h2', null, t('calc.shortcutsTitle')));
+    const list = el('ul', 'sc-list');
+    ['digits', 'ops', 'dot', 'eq', 'backspace', 'esc', 'percent', 'pi'].forEach(function (k) {
+      list.appendChild(el('li', null, t('calc.sc.' + k)));
+    });
+    box.appendChild(list);
+    const close = el('button', 'btn primary', t('calc.shortcutsClose'));
+    const dismiss = function () {
+      document.removeEventListener('keydown', onKey);
+      if (overlay.parentNode) {
+        overlay.parentNode.removeChild(overlay);
+      }
+    };
+    function onKey(ev) {
+      if (ev.key === 'Escape') {
+        dismiss();
+      }
+    }
+    close.onclick = dismiss;
+    overlay.onclick = function (ev) {
+      if (ev.target === overlay) {
+        dismiss();
+      }
+    };
+    box.appendChild(close);
+    overlay.appendChild(box);
+    document.addEventListener('keydown', onKey);
+    this.root.appendChild(overlay);
+    if (close.focus) {
+      close.focus();
+    }
+  };
+
+  CalcView.prototype._defs = function () {
+    window.CW.userDefs = window.CW.userDefs || { vars: {}, funcs: {} };
+    return window.CW.userDefs;
+  };
+
+  /** Имя не занято встроенной константой/функцией и не ключевое слово. */
+  CalcView.prototype._nameAllowed = function (name) {
+    const P = window.CW.parser;
+    const ud = this._defs();
+    if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(name)) {
+      return false;
+    }
+    if (
+      /^(and|or|xor|not|shl|shr|mod|rem)$/.test(name) ||
+      name === 'i' ||
+      name === 'I' ||
+      name === 'j'
+    ) {
+      return false;
+    }
+    if (name in P.CONSTANTS && !(name in ud.vars)) {
+      return false;
+    }
+    if (name in P.FUNCTIONS && !(name in ud.funcs)) {
+      return false;
+    }
+    return true;
+  };
+
+  /** Разобрать строку «имя = значение» или «имя(x) = выражение». */
+  CalcView.prototype._addDef = function (text) {
+    const raw = String(text || '').trim();
+    if (!raw) {
+      return;
+    }
+    const P = window.CW.parser;
+    const ud = this._defs();
+    let m = /^([A-Za-z_][A-Za-z0-9_]*)\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*\)\s*=\s*(.+)$/.exec(raw);
+    if (m) {
+      const name = m[1];
+      const arg = m[2];
+      const body = m[3];
+      if (!this._nameAllowed(name)) {
+        this._defErr = t('calc.err.badName', { name: name });
+        this._renderDefs();
+        return;
+      }
+      try {
+        const compiled = P.compileVars(body, [arg], this.st.deg);
+        P.defineUserFunction(name, 1, function (x) {
+          return compiled(x);
+        });
+        ud.funcs[name] = { arg: arg, body: body };
+        this._defErr = null;
+        this.defInput.value = '';
+        this._renderDefs();
+      } catch (e) {
+        this._defErr = e.message || t('calc.err.defParse');
+        this._renderDefs();
+      }
+      return;
+    }
+    m = /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.+)$/.exec(raw);
+    if (m) {
+      const name = m[1];
+      const rhs = m[2];
+      if (!this._nameAllowed(name)) {
+        this._defErr = t('calc.err.badName', { name: name });
+        this._renderDefs();
+        return;
+      }
+      try {
+        const value = P.evaluate(rhs, this.st.deg);
+        P.setVar(name, value);
+        ud.vars[name] = value;
+        this._defErr = null;
+        this.defInput.value = '';
+        this._renderDefs();
+      } catch (e) {
+        this._defErr = e.message || t('calc.err.defParse');
+        this._renderDefs();
+      }
+      return;
+    }
+    this._defErr = t('calc.err.defParse');
+    this._renderDefs();
+  };
+
+  CalcView.prototype._renderDefs = function () {
+    const self = this;
+    if (!this.defListEl) {
+      return;
+    }
+    this.defListEl.innerHTML = '';
+    const ud = this._defs();
+    if (this._defErr) {
+      this.defListEl.appendChild(el('div', 'hint err', this._defErr));
+    }
+    const vnames = Object.keys(ud.vars);
+    const fnames = Object.keys(ud.funcs);
+    if (!vnames.length && !fnames.length) {
+      if (!this._defErr) {
+        this.defListEl.appendChild(el('div', 'hint', t('calc.defsEmpty')));
+      }
+      return;
+    }
+    fnames.forEach(function (n) {
+      const row = el('div', 'def-row');
+      row.appendChild(
+        el('span', 'def-text', n + '(' + ud.funcs[n].arg + ') = ' + ud.funcs[n].body)
+      );
+      const rm = el('button', 'def-rm', '✕');
+      rm.setAttribute('aria-label', t('calc.defsRemove') + ': ' + n);
+      rm.onclick = function () {
+        window.CW.parser.removeUserFunction(n);
+        delete ud.funcs[n];
+        self._defErr = null;
+        self._renderDefs();
+      };
+      row.appendChild(rm);
+      self.defListEl.appendChild(row);
+    });
+    vnames.forEach(function (n) {
+      const row = el('div', 'def-row');
+      row.appendChild(el('span', 'def-text', n + ' = ' + F.fmt(ud.vars[n])));
+      const rm = el('button', 'def-rm', '✕');
+      rm.setAttribute('aria-label', t('calc.defsRemove') + ': ' + n);
+      rm.onclick = function () {
+        delete window.CW.parser.CONSTANTS[n];
+        delete ud.vars[n];
+        self._defErr = null;
+        self._renderDefs();
+      };
+      row.appendChild(rm);
+      self.defListEl.appendChild(row);
+    });
   };
 
   // ── Клавиатура ────────────────────────────────────────────

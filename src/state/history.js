@@ -28,7 +28,12 @@ window.CW.history = (function () {
       for (let i = 0; i < data.length; i++) {
         const d = data[i];
         if (d && typeof d.expr === 'string' && typeof d.result === 'string') {
-          this.entries.push({ expr: d.expr, result: d.result, ts: d.ts || Date.now() / 1000 });
+          this.entries.push({
+            expr: d.expr,
+            result: d.result,
+            ts: d.ts || Date.now() / 1000,
+            fav: !!d.fav,
+          });
         }
       }
     } catch (e) {
@@ -50,16 +55,32 @@ window.CW.history = (function () {
       return;
     }
     // Дедупликация: одинаковый expr+result не должен расти в списке.
+    // Флаг «избранное» при этом сохраняем.
+    let fav = false;
     for (let i = this.entries.length - 1; i >= 0; i--) {
       if (this.entries[i].expr === expr && this.entries[i].result === result) {
+        fav = fav || !!this.entries[i].fav;
         this.entries.splice(i, 1);
       }
     }
-    this.entries.push({ expr: expr, result: result, ts: Date.now() / 1000 });
+    this.entries.push({ expr: expr, result: result, ts: Date.now() / 1000, fav: fav });
     if (this.entries.length > MAX) {
       this.entries.splice(0, this.entries.length - MAX);
     }
     this._save();
+  };
+
+  /** Переключить «избранное» у записи. Возвращает новое состояние флага. */
+  History.prototype.toggleFav = function (expr, result) {
+    for (let i = this.entries.length - 1; i >= 0; i--) {
+      const e = this.entries[i];
+      if (e.expr === expr && e.result === result) {
+        e.fav = !e.fav;
+        this._save();
+        return e.fav;
+      }
+    }
+    return false;
   };
 
   History.prototype.all = function () {

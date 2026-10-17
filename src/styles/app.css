@@ -342,7 +342,8 @@ textarea:focus-visible,
 }
 
 /* ── Общие панели ─────────────────────────────────────────── */
-.card {
+.card,
+.dist-card {
   background: var(--card);
   border: 1px solid var(--grid);
   border-radius: var(--radius);
@@ -350,7 +351,8 @@ textarea:focus-visible,
   margin-bottom: 10px;
 }
 
-.card h2 {
+.card h2,
+.dist-card h2 {
   margin: 0 0 10px;
   font-size: 15px;
   font-weight: 600;
@@ -420,7 +422,8 @@ textarea.field {
   color: var(--btn-op-fg);
 }
 
-.out {
+.out,
+.sys-out {
   background: var(--entry-bg);
   border: 1px solid var(--entry-border);
   border-radius: var(--radius-sm);
@@ -432,7 +435,8 @@ textarea.field {
   min-height: 40px;
   line-height: 1.5;
 }
-.out.err {
+.out.err,
+.sys-out.err {
   color: var(--err);
   border-color: var(--err);
 }
@@ -616,6 +620,33 @@ textarea.field {
   border: none;
   padding: 0;
 }
+/* Режим кривой + до двух формул (параметрический режим). */
+.fn-row .fn-mode {
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 92px;
+  font-size: 12px;
+}
+.fn-row .fn-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.fn-inputs input[type='text'] {
+  flex: 1 1 130px;
+}
+/* Ползунки параметров a–d. */
+.param-cell {
+  flex: 1 1 160px;
+  gap: 6px;
+  align-items: center;
+}
+.param-cell input[type='range'] {
+  flex: 1 1 auto;
+  min-width: 80px;
+}
 
 /* ── Таблицы ──────────────────────────────────────────────── */
 table.data {
@@ -738,4 +769,91 @@ table.data th {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ── Избранное в истории ──────────────────────────────────── */
+.h-item-wrap {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--grid);
+}
+.h-item-wrap .h-item {
+  flex: 1 1 auto;
+  border-bottom: none;
+}
+.h-fav {
+  flex: 0 0 auto;
+  background: transparent;
+  border: none;
+  color: var(--sub);
+  cursor: pointer;
+  padding: 0 8px;
+  font-size: 15px;
+  min-height: 24px;
+}
+.h-fav.on {
+  color: var(--accent, #ff9f0a);
+}
+.h-fav:hover {
+  background: var(--btn-num-h);
+}
+
+/* ── Переменные и функции ─────────────────────────────────── */
+.defs {
+  margin-top: 8px;
+}
+.def-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 2px;
+  border-bottom: 1px solid var(--grid);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 13px;
+}
+.def-text {
+  color: var(--fg);
+  overflow-wrap: anywhere;
+}
+.def-rm {
+  flex: 0 0 auto;
+  background: transparent;
+  border: none;
+  color: var(--sub);
+  cursor: pointer;
+  font-size: 13px;
+  padding: 2px 6px;
+}
+.def-rm:hover {
+  color: var(--fg);
+}
+
+/* ── Модальное окно (горячие клавиши) ─────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 16px;
+}
+.modal-box {
+  background: var(--card, #1c1c1e);
+  color: var(--fg);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 20px;
+  max-width: 460px;
+  width: 100%;
+  max-height: 80vh;
+  overflow: auto;
+}
+.sc-list {
+  margin: 10px 0 16px;
+  padding-left: 18px;
+  line-height: 1.7;
+  font-size: 14px;
 }

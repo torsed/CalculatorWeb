@@ -32,6 +32,13 @@ window.CW.pages = window.CW.pages || {};
       ['φ(n)', 'phi'],
       [t('numtheory.mode.primes'), 'primes'],
       [t('numtheory.mode.bits'), 'bits'],
+      [t('numtheory.mode.mobius'), 'mobius'],
+      [t('numtheory.mode.pi'), 'pi'],
+      [t('numtheory.mode.divcount'), 'divcount'],
+      [t('numtheory.mode.divsum'), 'divsum'],
+      [t('numtheory.mode.cf'), 'cf'],
+      [t('numtheory.mode.crt'), 'crt'],
+      [t('numtheory.mode.rsa'), 'rsa'],
     ].forEach(function (p) {
       const o = el('option', null, p[0]);
       o.value = p[1];
@@ -47,11 +54,36 @@ window.CW.pages = window.CW.pages || {};
 
     btn.onclick = function () {
       try {
-        const n = Number(input.value);
-        if (input.value.trim() === '' || isNaN(n)) {
+        const raw = input.value.trim();
+        const mode = sel.value;
+        if (mode === 'crt') {
+          const pairs = raw.split(';').map(function (part) {
+            const kv = part.split(',').map(function (s) {
+              return parseInt(s.trim(), 10);
+            });
+            return kv;
+          });
+          const r = NT.crt(pairs);
+          out.textContent = 'x ≡ ' + r.x + '  (mod ' + r.mod + ')';
+          out.classList.remove('err');
+          return;
+        }
+        if (mode === 'rsa') {
+          const parts = raw.split(',').map(function (s) {
+            return parseInt(s.trim(), 10);
+          });
+          if (parts.length < 2) {
+            throw { message: t('numtheory.err.integer') };
+          }
+          const r = NT.rsa(parts[0], parts[1], parts[2]);
+          out.textContent = 'n = ' + r.n + '\nφ(n) = ' + r.phi + '\ne = ' + r.e + '\nd = ' + r.d;
+          out.classList.remove('err');
+          return;
+        }
+        const n = Number(raw);
+        if (raw === '' || isNaN(n)) {
           throw { message: t('numtheory.err.integer') };
         }
-        const mode = sel.value;
         if (mode === 'prime') {
           out.textContent = NT.isPrime(n) ? t('numtheory.yes') : t('numtheory.no');
         } else if (mode === 'next') {
@@ -63,6 +95,31 @@ window.CW.pages = window.CW.pages || {};
         } else if (mode === 'primes') {
           const ps = NT.primesBelow(n);
           out.textContent = ps.length ? ps.join(', ') : t('numtheory.nonePrimes', { n: n });
+        } else if (mode === 'mobius') {
+          out.textContent = 'μ(' + n + ') = ' + NT.mobius(n);
+        } else if (mode === 'pi') {
+          out.textContent = 'π(' + n + ') = ' + NT.primePi(n);
+        } else if (mode === 'divcount') {
+          out.textContent = 'd(' + n + ') = ' + NT.divisorCount(n);
+        } else if (mode === 'divsum') {
+          out.textContent = 'σ(' + n + ') = ' + NT.sumDivisors(n);
+        } else if (mode === 'cf') {
+          const cf = NT.continuedFraction(n, 24);
+          const conv = NT.convergents(cf);
+          out.textContent =
+            '[' +
+            cf[0] +
+            '; ' +
+            cf.slice(1).join(', ') +
+            ']\n' +
+            t('numtheory.cfConvergents') +
+            ': ' +
+            conv
+              .slice(-4)
+              .map(function (p) {
+                return p[0] + '/' + p[1];
+              })
+              .join(', ');
         } else {
           out.textContent = String(NT.digitCount(n, 16));
         }

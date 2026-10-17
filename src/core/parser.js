@@ -1046,6 +1046,51 @@ window.CW.parser = (function () {
     };
   }
 
+  /**
+   * Обобщение compileFn: выражение с произвольным набором переменных.
+   * Возвращает функцию, которой передаются значения этих переменных по
+   * порядку. Нужна для графиков с параметрами, систем уравнений и сумм.
+   */
+  function compileVars(expr, names, deg) {
+    if (deg === undefined) {
+      deg = true;
+    }
+    const rpn = toRpn(parse(expr));
+    const list = names || [];
+    return function () {
+      const saved = new Array(list.length);
+      for (let i = 0; i < list.length; i++) {
+        saved[i] = CONSTANTS[list[i]];
+        CONSTANTS[list[i]] = arguments[i];
+      }
+      try {
+        return evalRpn(rpn, deg);
+      } finally {
+        for (let i = 0; i < list.length; i++) {
+          if (saved[i] === undefined) {
+            delete CONSTANTS[list[i]];
+          } else {
+            CONSTANTS[list[i]] = saved[i];
+          }
+        }
+      }
+    };
+  }
+
+  /** Определить/переопределить переменную для использования в выражениях. */
+  function setVar(name, value) {
+    CONSTANTS[name] = value;
+  }
+
+  /** Зарегистрировать пользовательскую функцию (например, f(x) = …). */
+  function defineUserFunction(name, arity, fn) {
+    FUNCTIONS[name] = { arity: arity, fn: fn };
+  }
+
+  function removeUserFunction(name) {
+    delete FUNCTIONS[name];
+  }
+
   return {
     ExprError: ExprError,
     parse: parse,
@@ -1053,6 +1098,7 @@ window.CW.parser = (function () {
     evalRpn: evalRpn,
     evaluate: evaluate,
     compileFn: compileFn,
+    compileVars: compileVars,
     clearCache: clearCache,
     registerNumTheory: registerNumTheory,
     setAns: function (v) {
@@ -1061,6 +1107,9 @@ window.CW.parser = (function () {
     setMemory: function (v) {
       CONSTANTS.m = v;
     },
+    setVar: setVar,
+    defineUserFunction: defineUserFunction,
+    removeUserFunction: removeUserFunction,
     CONSTANTS: CONSTANTS,
     FUNCTIONS: FUNCTIONS,
   };

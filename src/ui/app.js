@@ -13,11 +13,13 @@ window.CW.app = (function () {
     { id: 'matrix', label: t('common.tab.matrix') },
     { id: 'numth', label: t('common.tab.numth') },
     { id: 'solver', label: t('common.tab.solver') },
+    { id: 'analysis', label: t('common.tab.analysis') },
     { id: 'phys', label: t('common.tab.phys') },
     { id: 'chem', label: t('common.tab.chem') },
     { id: 'geom', label: t('common.tab.geom') },
     { id: 'finance', label: t('common.tab.finance') },
     { id: 'util', label: t('common.tab.util') },
+    { id: 'date', label: t('common.tab.date') },
     { id: 'prob', label: t('common.tab.prob') },
     { id: 'prog', label: t('common.tab.prog') },
     { id: 'gen', label: t('common.tab.gen') },
@@ -217,11 +219,13 @@ window.CW.app = (function () {
     PG.mountMatrix(this);
     PG.mountNumTheory(this);
     PG.mountSolver(this);
+    PG.mountAnalysis(this);
     PG.mountPhys(this);
     PG.mountChem(this);
     PG.mountGeom(this);
     PG.mountFinance(this);
     PG.mountUtil(this);
+    PG.mountDate(this);
     PG.mountProb(this);
     PG.mountProg(this);
     PG.mountGen(this);
@@ -329,6 +333,7 @@ window.CW.app = (function () {
     const list = el('div', 'fn-list');
     page.appendChild(list);
     page.appendChild(this._rangeRow());
+    page.appendChild(this._paramRow());
 
     const row = el('div', 'row');
     row.style.marginTop = '10px';
@@ -474,17 +479,24 @@ window.CW.app = (function () {
   App.prototype._addFunction = function (fn) {
     const self = this;
     const P = window.CW.parser;
-    let compiled = null;
-    try {
-      compiled = P.compileFn(fn.fx, true);
-      fn.f = compiled;
-    } catch (e) {
-      fn.f = function () {
-        throw e;
-      };
-      fn.error = e.message || String(e);
-    }
+    fn.mode = fn.mode || 'y';
     fn.show = true;
+
+    // Пересобираем все компиляторы функции в зависимости от режима.
+    const compileAll = function () {
+      try {
+        fn.f = P.compileFn(fn.fx, true);
+        fn.g = fn.mode === 'param' ? P.compileFn(fn.gy || '0', true) : null;
+        fn.error = null;
+      } catch (e) {
+        fn.error = e.message || String(e);
+        fn.f = function () {
+          throw e;
+        };
+        fn.g = null;
+      }
+    };
+    compileAll();
     this.graphView.functions.push(fn);
 
     const row = el('div', 'fn-row');
@@ -492,10 +504,35 @@ window.CW.app = (function () {
     sw.style.background = fn.color;
     sw.setAttribute('aria-label', t('graph.colorFn', { fx: fn.fx }));
     sw.title = t('graph.changeColor');
+
+    const modeSel = el('select', 'field fn-mode');
+    [
+      ['graph.mode.y', 'y'],
+      ['graph.mode.polar', 'polar'],
+      ['graph.mode.param', 'param'],
+    ].forEach(function (p) {
+      const o = el('option', null, t(p[0]));
+      o.value = p[1];
+      modeSel.appendChild(o);
+    });
+    modeSel.value = fn.mode;
+    modeSel.setAttribute('aria-label', t('graph.mode'));
+
+    const wrapInput = el('div', 'fn-inputs');
     const input = el('input');
     input.type = 'text';
     input.value = fn.fx;
+    input.placeholder = fn.mode === 'polar' ? t('graph.ph.fxPolar') : t('graph.ph.fx');
     input.setAttribute('aria-label', t('graph.fnInput'));
+    const input2 = el('input');
+    input2.type = 'text';
+    input2.value = fn.gy || 'cos(t)';
+    input2.placeholder = t('graph.fnInputY');
+    input2.setAttribute('aria-label', t('graph.fnInputY'));
+    input2.style.display = fn.mode === 'param' ? '' : 'none';
+    wrapInput.appendChild(input);
+    wrapInput.appendChild(input2);
+
     const eye = el('button', 'btn', '●');
     eye.setAttribute('aria-label', t('graph.toggleFn', { fx: fn.fx }));
     eye.setAttribute('aria-pressed', 'true');
@@ -504,21 +541,30 @@ window.CW.app = (function () {
     del.setAttribute('aria-label', t('graph.delFn', { fx: fn.fx }));
     del.title = t('graph.del');
 
-    input.oninput = function () {
-      fn.fx = input.value;
-      try {
-        fn.f = P.compileFn(input.value, true);
-        fn.error = null;
-        row.style.borderColor = '';
-      } catch (e) {
-        fn.error = e.message || String(e);
-        fn.f = function () {
-          throw e;
-        };
-        row.style.borderColor = 'var(--err)';
-      }
+    const repaint = function () {
+      row.style.borderColor = fn.error ? 'var(--err)' : '';
       self.graphView.render();
     };
+    input.oninput = function () {
+      fn.fx = input.value;
+      compileAll();
+      repaint();
+    };
+    input2.oninput = function () {
+      fn.gy = input2.value;
+      compileAll();
+      repaint();
+    };
+    modeSel.onchange = function () {
+      fn.mode = modeSel.value;
+      input2.style.display = fn.mode === 'param' ? '' : 'none';
+      input.placeholder = fn.mode === 'polar' ? t('graph.ph.fxPolar') : t('graph.ph.fx');
+      compileAll();
+      repaint();
+    };
+    if (fn.error) {
+      row.style.borderColor = 'var(--err)';
+    }
     eye.onclick = function () {
       fn.show = !fn.show;
       eye.style.opacity = fn.show ? '1' : '0.35';
@@ -542,7 +588,8 @@ window.CW.app = (function () {
     };
 
     row.appendChild(sw);
-    row.appendChild(input);
+    row.appendChild(modeSel);
+    row.appendChild(wrapInput);
     row.appendChild(eye);
     row.appendChild(del);
     this.pageNodes.graph.querySelector('.fn-list').appendChild(row);
@@ -626,6 +673,90 @@ window.CW.app = (function () {
     logRow.appendChild(logYLabel);
 
     card.appendChild(logRow);
+    return card;
+  };
+
+  // Ползунки параметров a–d и интервал θ/t для полярного/параметрического режимов.
+  App.prototype._paramRow = function () {
+    const self = this;
+    const card = el('div', 'card');
+    card.style.marginTop = '10px';
+    card.appendChild(el('h2', null, t('graph.paramsTitle')));
+
+    const row = el('div', 'row');
+    self.paramInputs = {};
+    ['A', 'B', 'C', 'D'].forEach(function (name) {
+      const w = el('div', 'row param-cell');
+      const label = document.createElement('label');
+      label.textContent = name + ' =';
+      label.setAttribute('for', 'graph-param-' + name);
+      label.style.color = 'var(--sub)';
+      label.style.fontSize = '12px';
+      const input = el('input', 'field');
+      input.type = 'range';
+      input.id = 'graph-param-' + name;
+      input.min = '-10';
+      input.max = '10';
+      input.step = '0.1';
+      const def = name === 'A' ? 1 : name === 'B' ? 1 : 0;
+      input.value = String(def);
+      input.style.flex = '1 1 auto';
+      input.setAttribute('aria-label', t('graph.paramAria', { name: name }));
+      const out = el('span', 'hint', input.value);
+      out.style.minWidth = '36px';
+      out.style.textAlign = 'right';
+      input.oninput = function () {
+        window.CW.parser.setVar(name, parseFloat(input.value));
+        out.textContent = input.value;
+        self.graphView.render();
+      };
+      window.CW.parser.setVar(name, def);
+      w.appendChild(label);
+      w.appendChild(input);
+      w.appendChild(out);
+      self.paramInputs[name] = input;
+      row.appendChild(w);
+    });
+    card.appendChild(row);
+
+    // Интервал параметра θ/t для неразрывных (полярных/параметрических) кривых.
+    const domRow = el('div', 'row');
+    domRow.style.marginTop = '8px';
+    [
+      ['tmin', '0'],
+      ['tmax', String(2 * Math.PI)],
+    ].forEach(function (p) {
+      const w = el('div', 'row');
+      w.style.flex = '1 1 110px';
+      const input = el('input', 'field');
+      input.type = 'text';
+      input.id = 'graph-' + p[0];
+      input.value = p[1];
+      input.style.flex = '1 1 auto';
+      input.setAttribute('aria-label', t('graph.domain') + ' ' + p[0]);
+      const label = document.createElement('label');
+      label.textContent = t('graph.domain') + ' ' + p[0];
+      label.setAttribute('for', input.id);
+      label.style.color = 'var(--sub)';
+      label.style.fontSize = '12px';
+      input.onchange = function () {
+        const lo = parseFloat(self.tRangeInputs.tmin.value);
+        const hi = parseFloat(self.tRangeInputs.tmax.value);
+        if (!Number.isFinite(lo) || !Number.isFinite(hi) || hi === lo) {
+          return;
+        }
+        self.graphView.tmin = lo;
+        self.graphView.tmax = hi;
+        self.graphView.render();
+      };
+      w.appendChild(label);
+      w.appendChild(input);
+      self.tRangeInputs = self.tRangeInputs || {};
+      self.tRangeInputs[p[0]] = input;
+      domRow.appendChild(w);
+    });
+    card.appendChild(domRow);
+    card.appendChild(el('div', 'hint', t('graph.paramsHint')));
     return card;
   };
 

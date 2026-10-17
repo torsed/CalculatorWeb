@@ -16,11 +16,13 @@
     'common.tab.matrix': 'Матрицы',
     'common.tab.numth': 'Числа',
     'common.tab.solver': 'Решатель',
+    'common.tab.analysis': 'Анализ',
     'common.tab.phys': 'Физика',
     'common.tab.chem': 'Химия',
     'common.tab.geom': 'Геометрия',
     'common.tab.finance': 'Финансы',
     'common.tab.util': 'Быт',
+    'common.tab.date': 'Дата',
     'common.tab.prob': 'Вероятность',
     'common.tab.prog': 'Программирование',
     'common.tab.gen': 'Генератор',
@@ -57,6 +59,7 @@
     'common.to': 'В',
     'common.result': 'Результат',
     'common.error': 'Ошибка',
+    'common.enterExpression': 'Введите выражение',
   });
   i18n.add('en', {
     'common.brand': 'Calculator',
@@ -70,11 +73,13 @@
     'common.tab.matrix': 'Matrices',
     'common.tab.numth': 'Numbers',
     'common.tab.solver': 'Solver',
+    'common.tab.analysis': 'Analysis',
     'common.tab.phys': 'Physics',
     'common.tab.chem': 'Chemistry',
     'common.tab.geom': 'Geometry',
     'common.tab.finance': 'Finance',
     'common.tab.util': 'Everyday',
+    'common.tab.date': 'Date',
     'common.tab.prob': 'Probability',
     'common.tab.prog': 'Programming',
     'common.tab.gen': 'Generator',
@@ -111,5 +116,6 @@
     'common.to': 'To',
     'common.result': 'Result',
     'common.error': 'Error',
+    'common.enterExpression': 'Enter an expression',
   });
 })();

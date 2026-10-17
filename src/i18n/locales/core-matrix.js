@@ -18,6 +18,8 @@
     'core.matrixNoUniqueSolution': 'Система не имеет единственного решения',
     'core.matrixEigenSquareRequired': 'Собственные значения — только для квадратной матрицы',
     'core.matrixPolyModuleMissing': 'Модуль полиномов не загружен',
+    'core.matrixPowerInt': 'Степень должна быть целым числом',
+    'core.matrixQrShape': 'QR поддерживается при числе строк ≥ числа столбцов',
   });
   i18n.add('en', {
     'core.matrixNonFinite': 'Value must be a finite number',
@@ -35,5 +37,7 @@
     'core.matrixNoUniqueSolution': 'System has no unique solution',
     'core.matrixEigenSquareRequired': 'Eigenvalues are only defined for a square matrix',
     'core.matrixPolyModuleMissing': 'Polynomial module is not loaded',
+    'core.matrixPowerInt': 'The exponent must be an integer',
+    'core.matrixQrShape': 'QR requires rows ≥ columns',
   });
 })();

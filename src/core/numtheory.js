@@ -244,6 +244,153 @@ window.CW.numtheory = (function () {
     return count;
   }
 
+  /** Наибольший общий делитель (неотрицательный). */
+  function gcd(a, b) {
+    a = Math.abs(a);
+    b = Math.abs(b);
+    while (b) {
+      const t = a % b;
+      a = b;
+      b = t;
+    }
+    return a;
+  }
+
+  /** Функция Мёбиуса μ(n): 0 при квадратном множителе, иначе (−1)^k. */
+  function mobius(n) {
+    n = checkInt(n);
+    if (n <= 0) {
+      throw ExprError('μ определена для положительных чисел', 'mobiusPositive');
+    }
+    if (n === 1) {
+      return 1;
+    }
+    const f = factorize(n);
+    for (let i = 0; i < f.length; i++) {
+      if (f[i][1] > 1) {
+        return 0;
+      }
+    }
+    return f.length % 2 === 0 ? 1 : -1;
+  }
+
+  /** Число простых, не больших n (π(n)). */
+  function primePi(n) {
+    return primesBelow(n).length;
+  }
+
+  /** Число делителей d(n) = ∏(e_i + 1). */
+  function divisorCount(n) {
+    n = checkInt(n);
+    if (n <= 0) {
+      throw ExprError('Функция делителей определена для положительных чисел', 'divisorsPositive');
+    }
+    return factorize(n).reduce(function (acc, p) {
+      return acc * (p[1] + 1);
+    }, 1);
+  }
+
+  /** Сумма делителей σ(n) = ∏(p^{e+1} − 1)/(p − 1). */
+  function sumDivisors(n) {
+    n = checkInt(n);
+    if (n <= 0) {
+      throw ExprError('Сумма делителей определена для положительных чисел', 'divisorsPositive');
+    }
+    return factorize(n).reduce(function (acc, p) {
+      return acc * ((Math.pow(p[0], p[1] + 1) - 1) / (p[0] - 1));
+    }, 1);
+  }
+
+  /**
+   * Китайская теорема об остатках: x ≡ a_i (mod m_i). Возвращает {x, mod}.
+   * Модули не обязаны быть взаимно простыми; при несовместности — ошибка.
+   */
+  function crt(pairs) {
+    if (!Array.isArray(pairs) || !pairs.length) {
+      throw ExprError('Нужен хотя бы один остаток', 'crtEmpty');
+    }
+    let x = 0;
+    let M = 1;
+    for (let i = 0; i < pairs.length; i++) {
+      const a = checkInt(pairs[i][0]);
+      const m = checkInt(pairs[i][1]);
+      if (m <= 0) {
+        throw ExprError('Модуль должен быть положительным', 'crtModPositive');
+      }
+      const g = gcd(M, m);
+      if ((a - x) % g !== 0) {
+        throw ExprError('Система сравнений несовместна', 'crtNoSolution');
+      }
+      const m1 = M / g;
+      const m2 = m / g;
+      const inv = modInverse(((m1 % m2) + m2) % m2, m2);
+      const t = (((((a - x) / g) * inv) % m2) + m2) % m2;
+      x = x + M * t;
+      M = M * m2;
+      x = ((x % M) + M) % M;
+    }
+    return { x: x, mod: M };
+  }
+
+  /** Непрерывная дробь числа: [a0, a1, …]. */
+  function continuedFraction(value, maxTerms) {
+    maxTerms = maxTerms || 20;
+    if (!Number.isFinite(value)) {
+      throw ExprError('Нужно конечное число', 'cfFinite');
+    }
+    const out = [];
+    let x = value;
+    for (let i = 0; i < maxTerms; i++) {
+      const a = Math.floor(x);
+      out.push(a);
+      const frac = x - a;
+      if (Math.abs(frac) < 1e-12) {
+        break;
+      }
+      x = 1 / frac;
+    }
+    return out;
+  }
+
+  /** Подходящие дроби непрерывной дроби: [[p,q], …]. */
+  function convergents(cf) {
+    const out = [];
+    let h1 = 1;
+    let h2 = 0;
+    let k1 = 0;
+    let k2 = 1;
+    for (let i = 0; i < cf.length; i++) {
+      const a = cf[i];
+      const h = a * h1 + h2;
+      const k = a * k1 + k2;
+      out.push([h, k]);
+      h2 = h1;
+      h1 = h;
+      k2 = k1;
+      k1 = k;
+    }
+    return out;
+  }
+
+  /**
+   * Параметры RSA по двум простым: n, φ, d (при заданном e, по умолчанию 65537).
+   */
+  function rsa(p, q, e) {
+    p = checkInt(p);
+    q = checkInt(q);
+    if (!isPrime(p) || !isPrime(q) || p === q) {
+      throw ExprError('p и q должны быть различными простыми числами', 'rsaPrimes');
+    }
+    e = e === undefined || e === null || e === 0 ? 65537 : checkInt(e);
+    const n = p * q;
+    const phi = (p - 1) * (q - 1);
+    if (gcd(e, phi) !== 1) {
+      throw ExprError('e должно быть взаимно просто с φ(n)', 'rsaECoprime');
+    }
+    const d = modInverse(((e % phi) + phi) % phi, phi);
+    return { p: p, q: q, n: n, phi: phi, e: e, d: d };
+  }
+
   return {
     isPrime: isPrime,
     nextPrime: nextPrime,
@@ -251,8 +398,18 @@ window.CW.numtheory = (function () {
     factorString: factorString,
     totient: totient,
     modpow: modpow,
+    modInverse: modInverse,
     sieve: sieve,
     primesBelow: primesBelow,
     digitCount: digitCount,
+    gcd: gcd,
+    mobius: mobius,
+    primePi: primePi,
+    divisorCount: divisorCount,
+    sumDivisors: sumDivisors,
+    crt: crt,
+    continuedFraction: continuedFraction,
+    convergents: convergents,
+    rsa: rsa,
   };
 })();

@@ -9,3 +9,4 @@
 require('./smoke.js');
 require('./run_vectors.js');
 require('./chem_balance.test.js');
+require('./core_ext.test.js');

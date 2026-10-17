@@ -18,6 +18,29 @@
       'Формула вычисляет «{target}». Не удалось решить относительно «{key}» — проверьте данные.',
     'prob.hint':
       'Вероятности p — в долях (0 ≤ p ≤ 1), k — целое число, λ — параметр Пуассона. Оставьте пустым поле с искомой величиной.',
+    'prob.distsTitle': 'Распределения и квантили',
+    'prob.distOf': 'Распределение',
+    'prob.mode': 'Что вычислить',
+    'prob.mode.pdf': 'Плотность / вероятность  (f)',
+    'prob.mode.cdf': 'Функция распределения  (F)',
+    'prob.mode.quantile': 'Квантиль (обратная F)',
+    'prob.value': 'Значение x',
+    'prob.probability': 'Вероятность p (0…1)',
+    'prob.stat.mean': 'Среднее',
+    'prob.stat.variance': 'Дисперсия',
+    'prob.distsHint':
+      'Введите параметры закона, затем x (для f/F) или p (для квантиля). ' +
+      'Для нормального — μ и σ; для t — число степеней свободы ν; для χ² — k.',
+    'prob.dist.normal': 'Нормальное N(μ, σ)',
+    'prob.dist.studentT': 'Стьюдента t(ν)',
+    'prob.dist.chi2': 'Хи-квадрат χ²(k)',
+    'prob.dist.fisherF': 'Фишера F(d₁, d₂)',
+    'prob.dist.exponential': 'Показательное Exp(λ)',
+    'prob.dist.uniform': 'Равномерное U(a, b)',
+    'prob.dist.binomial': 'Биномиальное B(n, p)',
+    'prob.dist.poisson': 'Пуассона P(λ)',
+    'prob.dist.geometric': 'Геометрическое Geom(p)',
+    'prob.dist.hypergeometric': 'Гипергеометрическое (N, K, n)',
   });
   i18n.add('en', {
     'prob.distribution': 'Distribution',
@@ -35,5 +58,28 @@
       'The formula computes «{target}». Could not solve for «{key}» — check the data.',
     'prob.hint':
       'Probabilities p are fractions (0 ≤ p ≤ 1), k is an integer, λ is the Poisson parameter. Leave the field for the unknown value empty.',
+    'prob.distsTitle': 'Distributions and quantiles',
+    'prob.distOf': 'Distribution',
+    'prob.mode': 'What to compute',
+    'prob.mode.pdf': 'Density / probability  (f)',
+    'prob.mode.cdf': 'Cumulative distribution  (F)',
+    'prob.mode.quantile': 'Quantile (inverse F)',
+    'prob.value': 'Value x',
+    'prob.probability': 'Probability p (0…1)',
+    'prob.stat.mean': 'Mean',
+    'prob.stat.variance': 'Variance',
+    'prob.distsHint':
+      'Enter the distribution parameters, then x (for f/F) or p (for a quantile). ' +
+      'Normal — μ and σ; t — degrees of freedom ν; χ² — k.',
+    'prob.dist.normal': 'Normal N(μ, σ)',
+    'prob.dist.studentT': 'Student t(ν)',
+    'prob.dist.chi2': 'Chi-square χ²(k)',
+    'prob.dist.fisherF': 'Fisher F(d₁, d₂)',
+    'prob.dist.exponential': 'Exponential Exp(λ)',
+    'prob.dist.uniform': 'Uniform U(a, b)',
+    'prob.dist.binomial': 'Binomial B(n, p)',
+    'prob.dist.poisson': 'Poisson P(λ)',
+    'prob.dist.geometric': 'Geometric Geom(p)',
+    'prob.dist.hypergeometric': 'Hypergeometric (N, K, n)',
   });
 })();

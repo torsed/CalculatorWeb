@@ -169,6 +169,44 @@ window.CW.pages = window.CW.pages || {};
       chips.appendChild(c);
     });
     page.appendChild(chips);
+
+    // ── Системы линейных уравнений ──────────────────────────
+    const sysCard = el('div', 'card');
+    sysCard.appendChild(el('h2', null, t('solver.systemTitle')));
+    const sys = el('textarea', 'field');
+    sys.value = 'x + y = 3\nx - y = 1';
+    sys.placeholder = t('solver.systemPlaceholder');
+    sys.setAttribute('aria-label', t('solver.systemTitle'));
+    sysCard.appendChild(sys);
+    const sysOut = el('div', { cls: 'sys-out', attrs: { role: 'status', 'aria-live': 'polite' } });
+    sysCard.appendChild(sysOut);
+    const sysRow = el('div', 'row');
+    sysRow.style.marginTop = '8px';
+    const sysBtn = el('button', 'btn primary', t('solver.systemSolve'));
+    sysBtn.onclick = function () {
+      sysOut.classList.remove('err');
+      try {
+        const deg =
+          window.CW.appInstance &&
+          window.CW.appInstance.calcView &&
+          window.CW.appInstance.calcView.st
+            ? window.CW.appInstance.calcView.st.deg
+            : true;
+        const res = window.CW.linsystem.solve(sys.value, deg);
+        sysOut.textContent = res.vars
+          .map(function (name, i) {
+            return name + ' = ' + F.fmt(res.solution[i], 10);
+          })
+          .join('\n');
+      } catch (e) {
+        sysOut.textContent = e.message || String(e);
+        sysOut.classList.add('err');
+      }
+    };
+    sysRow.appendChild(sysBtn);
+    sysCard.appendChild(sysRow);
+    sysCard.appendChild(el('div', 'hint', t('solver.systemHint')));
+    page.appendChild(sysCard);
   }
 
   window.CW.pages.mountSolver = mountSolver;

@@ -435,6 +435,168 @@ window.CW.matrix = (function () {
     return poly.roots(c.slice().reverse());
   }
 
+  /** След квадратной матрицы. */
+  function trace(m) {
+    if (!isSquare(m)) {
+      throw Err('След определён для квадратной матрицы', 'matrixSquareRequired');
+    }
+    let s = 0;
+    for (let i = 0; i < m.length; i++) {
+      s += m[i][i];
+    }
+    return s;
+  }
+
+  /** Норма Фробениуса. */
+  function normFro(m) {
+    shape(m);
+    let s = 0;
+    m.forEach(function (row) {
+      row.forEach(function (x) {
+        s += x * x;
+      });
+    });
+    return Math.sqrt(s);
+  }
+
+  /** Целая степень квадратной матрицы (отрицательная — через обратную). */
+  function power(m, n) {
+    if (!isSquare(m)) {
+      throw Err('Степень определена для квадратной матрицы', 'matrixSquareRequired');
+    }
+    if (!Number.isInteger(n)) {
+      throw Err('Степень должна быть целым числом', 'matrixPowerInt');
+    }
+    let base =
+      n < 0
+        ? inverse(m)
+        : m.map(function (r) {
+            return r.slice();
+          });
+    let e = Math.abs(n);
+    let result = identity(m.length);
+    while (e > 0) {
+      if (e & 1) {
+        result = mul(result, base);
+      }
+      base = mul(base, base);
+      e >>= 1;
+    }
+    return result;
+  }
+
+  /** Приведённый ступенчатый вид (RREF) по методу Гаусса–Жордана. */
+  function rref(m) {
+    shape(m);
+    const a = m.map(function (r) {
+      return r.slice();
+    });
+    const rows = a.length;
+    const cols = a[0].length;
+    const pivots = [];
+    let lead = 0;
+    const eps = singularThreshold(m);
+    for (let r = 0; r < rows && lead < cols; r++) {
+      // Ищем ведущий элемент в столбце lead.
+      let i = r;
+      while (i < rows && Math.abs(a[i][lead]) <= eps) {
+        i++;
+      }
+      if (i === rows) {
+        lead++;
+        r--;
+        continue;
+      }
+      const tmp = a[i];
+      a[i] = a[r];
+      a[r] = tmp;
+      const pv = a[r][lead];
+      for (let j = 0; j < cols; j++) {
+        a[r][j] /= pv;
+      }
+      for (let k = 0; k < rows; k++) {
+        if (k !== r) {
+          const f = a[k][lead];
+          if (f !== 0) {
+            for (let j = 0; j < cols; j++) {
+              a[k][j] -= f * a[r][j];
+            }
+          }
+        }
+      }
+      pivots.push(lead);
+      lead++;
+    }
+    return { rref: a, pivots: pivots, rank: pivots.length };
+  }
+
+  /** LU-разложение с частичным выбором: P·A = L·U. */
+  function lu(m) {
+    const d = luDecompose(m);
+    const n = d.lu.length;
+    const L = identity(n);
+    const U = [];
+    for (let i = 0; i < n; i++) {
+      U.push(d.lu[i].slice());
+      for (let j = 0; j < i; j++) {
+        L[i][j] = d.lu[i][j];
+        U[i][j] = 0;
+      }
+    }
+    const P = [];
+    for (let i = 0; i < n; i++) {
+      P.push(new Array(n).fill(0));
+      P[i][d.perm[i]] = 1;
+    }
+    return { L: L, U: U, P: P, singular: !!d.singular };
+  }
+
+  /** QR-разложение (классический Грама–Шмидта) для m×n, m ≥ n. */
+  function qr(m) {
+    const s = shape(m);
+    if (s.rows < s.cols) {
+      throw Err('QR поддерживается при числе строк ≥ числа столбцов', 'matrixQrShape');
+    }
+    const n = s.cols;
+    const Q = [];
+    for (let i = 0; i < s.rows; i++) {
+      Q.push(new Array(n).fill(0));
+    }
+    const R = [];
+    for (let j = 0; j < n; j++) {
+      R.push(new Array(n).fill(0));
+    }
+    for (let j = 0; j < n; j++) {
+      const v = [];
+      for (let i = 0; i < s.rows; i++) {
+        v.push(m[i][j]);
+      }
+      for (let k = 0; k < j; k++) {
+        let dot = 0;
+        for (let i = 0; i < s.rows; i++) {
+          dot += Q[i][k] * m[i][j];
+        }
+        R[k][j] = dot;
+        for (let i = 0; i < s.rows; i++) {
+          v[i] -= dot * Q[i][k];
+        }
+      }
+      let nrm = Math.sqrt(
+        v.reduce(function (acc, x) {
+          return acc + x * x;
+        }, 0)
+      );
+      R[j][j] = nrm;
+      if (nrm < 1e-14) {
+        nrm = 1e-14;
+      }
+      for (let i = 0; i < s.rows; i++) {
+        Q[i][j] = v[i] / nrm;
+      }
+    }
+    return { Q: Q, R: R };
+  }
+
   return {
     parse: parse,
     format: format,
@@ -450,6 +612,12 @@ window.CW.matrix = (function () {
     rank: rank,
     solve: solve,
     eigenvalues: eigenvalues,
+    trace: trace,
+    normFro: normFro,
+    power: power,
+    rref: rref,
+    lu: lu,
+    qr: qr,
     fmt: fmt,
     singularThreshold: singularThreshold,
   };

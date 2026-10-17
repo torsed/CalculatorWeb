@@ -40,20 +40,38 @@ window.CW.pages = window.CW.pages || {};
       [t('matrix.op.solve'), 'solve'],
       [t('matrix.op.eig'), 'eig'],
       [t('matrix.op.scale'), 'scale'],
+      [t('matrix.op.trace'), 'trace'],
+      [t('matrix.op.norm'), 'norm'],
+      [t('matrix.op.power'), 'power'],
+      [t('matrix.op.rref'), 'rref'],
+      [t('matrix.op.lu'), 'lu'],
+      [t('matrix.op.qr'), 'qr'],
     ].forEach(function (p) {
       const o = el('option', null, p[0]);
       o.value = p[1];
       sel.appendChild(o);
     });
+    const powerInput = el('input', 'field');
+    powerInput.type = 'text';
+    powerInput.value = '2';
+    powerInput.style.display = 'none';
+    powerInput.style.flex = '0 1 70px';
+    powerInput.setAttribute('aria-label', t('matrix.op.power'));
+    powerInput.placeholder = 'n';
     const btn = el('button', 'btn primary', t('common.calculate'));
     const out = el('div', { cls: 'out', attrs: { role: 'status', 'aria-live': 'polite' } });
     row.appendChild(sel);
+    row.appendChild(powerInput);
     row.appendChild(btn);
     card.appendChild(a);
     card.appendChild(el('div', 'hint', t('matrix.hintB')));
     card.appendChild(b);
     card.appendChild(row);
     card.appendChild(out);
+
+    sel.onchange = function () {
+      powerInput.style.display = sel.value === 'power' ? '' : 'none';
+    };
 
     btn.onclick = function () {
       try {
@@ -105,6 +123,21 @@ window.CW.pages = window.CW.pages || {};
               });
             })
           );
+        } else if (s === 'trace') {
+          text = F.fmt(M.trace(ma));
+        } else if (s === 'norm') {
+          text = F.fmt(M.normFro(ma));
+        } else if (s === 'power') {
+          text = M.format(M.power(ma, parseInt(powerInput.value, 10)));
+        } else if (s === 'rref') {
+          const r = M.rref(ma);
+          text = 'RREF:\n' + M.format(r.rref) + '\n\n' + t('matrix.rankLabel', { n: r.rank });
+        } else if (s === 'lu') {
+          const d = M.lu(ma);
+          text = 'L:\n' + M.format(d.L) + '\n\nU:\n' + M.format(d.U) + '\n\nP:\n' + M.format(d.P);
+        } else if (s === 'qr') {
+          const d = M.qr(ma);
+          text = 'Q:\n' + M.format(d.Q) + '\n\nR:\n' + M.format(d.R);
         } else {
           const mb = M.parse(b.value);
           text = M.format(

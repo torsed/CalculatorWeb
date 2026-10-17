@@ -5,10 +5,11 @@
   "main": "index.html",
   "scripts": {
     "start": "start index.html",
-    "test": "node tests/smoke.js && node tests/run_vectors.js && node tests/chem_balance.test.js",
+    "test": "node tests/smoke.js && node tests/run_vectors.js && node tests/chem_balance.test.js && node tests/core_ext.test.js",
     "test:smoke": "node tests/smoke.js",
     "test:vectors": "node tests/run_vectors.js",
     "test:chem": "node tests/chem_balance.test.js",
+    "test:core": "node tests/core_ext.test.js",
     "test:e2e": "playwright test",
     "test:coverage": "c8 node tests/coverage.js",
     "typecheck": "tsc -p tsconfig.json",

@@ -11,6 +11,8 @@ test.describe('Accessibility (axe-core, WCAG 2.2 AA)', () => {
   });
 
   test('all tabs: no axe violations (wcag2a/wcag2aa)', async ({ page }) => {
+    // Вкладок много, axe-анализ каждой занимает время: даём тесту запас.
+    test.setTimeout(60000);
     const tabs = await page.evaluate(() => window.CW.app.TABS.map(t => t.id));
     const failures = [];
     for (const id of tabs) {

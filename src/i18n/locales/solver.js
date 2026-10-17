@@ -16,6 +16,12 @@
     'solver.notFound': 'Корней не найдено',
     'solver.err.equals': 'Ожидается не более одного знака «=»',
     'solver.symbolicNone': 'Символьное решение не найдено — численные корни.',
+    'solver.systemTitle': 'Система линейных уравнений',
+    'solver.systemPlaceholder': 'по одному уравнению в строке, например:\nx + y = 3\nx - y = 1',
+    'solver.systemSolve': 'Решить систему',
+    'solver.systemHint':
+      'Линейные системы 2×2, 3×3 и больше: неизвестные определяются автоматически. ' +
+      'Число уравнений должно совпадать с числом неизвестных.',
   });
   i18n.add('en', {
     'solver.title': 'Solving the equation f(x) = 0',
@@ -31,5 +37,11 @@
     'solver.notFound': 'No roots found',
     'solver.err.equals': 'At most one "=" sign is expected',
     'solver.symbolicNone': 'No symbolic solution found — numeric roots.',
+    'solver.systemTitle': 'System of linear equations',
+    'solver.systemPlaceholder': 'one equation per line, e.g.:\nx + y = 3\nx - y = 1',
+    'solver.systemSolve': 'Solve the system',
+    'solver.systemHint':
+      'Linear systems 2×2, 3×3 and larger: the unknowns are detected automatically. ' +
+      'The number of equations must equal the number of unknowns.',
   });
 })();

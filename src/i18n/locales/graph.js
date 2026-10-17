@@ -35,6 +35,19 @@
     'graph.err.range': 'Диапазон содержит некорректные значения',
     'graph.err.xmin': 'xmin должен быть меньше xmax',
     'graph.err.ymin': 'ymin должен быть меньше ymax',
+    'graph.mode': 'Тип кривой',
+    'graph.mode.y': 'y = f(x)',
+    'graph.mode.polar': 'r = f(θ)',
+    'graph.mode.param': 'x(t), y(t)',
+    'graph.fnInputY': 'Вторая функция y(t)',
+    'graph.ph.fx': 'например sin(x)',
+    'graph.ph.fxPolar': 'например 1 + cos(θ)',
+    'graph.paramsTitle': 'Параметры кривых',
+    'graph.paramsHint':
+      'Ползунки задают переменные A, B, C, D — используйте их в формулах, например ' +
+      'A·sin(B·x). Полярный и параметрический режимы считают θ/t на интервале ниже.',
+    'graph.paramAria': 'Параметр {name}',
+    'graph.domain': 'Интервал θ/t',
   });
   i18n.add('en', {
     'graph.aria':
@@ -69,5 +82,18 @@
     'graph.err.range': 'Range contains invalid values',
     'graph.err.xmin': 'xmin must be less than xmax',
     'graph.err.ymin': 'ymin must be less than ymax',
+    'graph.mode': 'Curve type',
+    'graph.mode.y': 'y = f(x)',
+    'graph.mode.polar': 'r = f(θ)',
+    'graph.mode.param': 'x(t), y(t)',
+    'graph.fnInputY': 'Second function y(t)',
+    'graph.ph.fx': 'e.g. sin(x)',
+    'graph.ph.fxPolar': 'e.g. 1 + cos(θ)',
+    'graph.paramsTitle': 'Curve parameters',
+    'graph.paramsHint':
+      'The sliders set variables A, B, C, D — use them in formulas, e.g. A·sin(B·x). ' +
+      'Polar and parametric modes evaluate θ/t over the interval below.',
+    'graph.paramAria': 'Parameter {name}',
+    'graph.domain': 'θ/t interval',
   });
 })();

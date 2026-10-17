@@ -108,6 +108,176 @@ window.CW.pages = window.CW.pages || {};
     });
     samples.appendChild(chips);
     page.appendChild(samples);
+
+    // ── Регрессия и корреляция ──────────────────────────────
+    const regCard = el('div', 'card');
+    regCard.appendChild(el('h2', null, t('stats.regressTitle')));
+    regCard.appendChild(el('div', 'label-hint', t('stats.pairsLabel')));
+    const pairs = el('textarea', 'field');
+    pairs.value = '1 2\n2 5\n3 7\n4 11';
+    pairs.placeholder = t('stats.pairsPlaceholder');
+    pairs.setAttribute('aria-label', t('stats.pairsLabel'));
+    regCard.appendChild(pairs);
+    const degRow = el('div', 'row');
+    degRow.style.marginTop = '8px';
+    const degSel = el('select', 'field');
+    [
+      ['stats.deg1', '1'],
+      ['stats.deg2', '2'],
+      ['stats.deg3', '3'],
+    ].forEach(function (p) {
+      const o = el('option', null, t(p[0]));
+      o.value = p[1];
+      degSel.appendChild(o);
+    });
+    degSel.setAttribute('aria-label', t('stats.degree'));
+    degRow.appendChild(degSel);
+    const regBtn = el('button', 'btn primary', t('common.calculate'));
+    degRow.appendChild(regBtn);
+    regCard.appendChild(degRow);
+    const regOut = el('div', { cls: 'out', attrs: { role: 'status', 'aria-live': 'polite' } });
+    regCard.appendChild(regOut);
+    regCard.appendChild(el('div', 'hint', t('stats.regressHint')));
+
+    regBtn.onclick = function () {
+      regOut.classList.remove('err');
+      try {
+        const cols = S.parseColumns(pairs.value);
+        const lines = [];
+        const p = S.pearson(cols.xs, cols.ys);
+        const sp = S.spearman(cols.xs, cols.ys);
+        lines.push(t('stats.corrPearson') + ': ' + (p === null ? '—' : F.fmt(p, 6)));
+        lines.push(t('stats.corrSpearman') + ': ' + (sp === null ? '—' : F.fmt(sp, 6)));
+        const reg = S.linearRegression(cols.xs, cols.ys);
+        lines.push(t('stats.slope') + ': ' + F.fmt(reg.slope, 6));
+        lines.push(t('stats.intercept') + ': ' + F.fmt(reg.intercept, 6));
+        lines.push(t('stats.r2') + ': ' + F.fmt(reg.r2, 6));
+        const d = parseInt(degSel.value, 10);
+        if (d > 1) {
+          const poly = S.polyRegression(cols.xs, cols.ys, d);
+          lines.push(
+            t('stats.polyCoeffs') +
+              ': ' +
+              poly.coeff
+                .map(function (c) {
+                  return F.fmt(c, 6);
+                })
+                .join(', ')
+          );
+          lines.push(t('stats.r2') + ': ' + F.fmt(poly.r2, 6));
+        }
+        regOut.textContent = lines.join('\n');
+      } catch (e) {
+        regOut.textContent = e.message || String(e);
+        regOut.classList.add('err');
+      }
+    };
+    page.appendChild(regCard);
+
+    // ── Проверки гипотез ────────────────────────────────────
+    const testCard = el('div', 'card');
+    testCard.appendChild(el('h2', null, t('stats.testsTitle')));
+    const testSel = el('select', 'field');
+    [
+      ['stats.test.t1', 't1'],
+      ['stats.test.t2', 't2'],
+      ['stats.test.ci', 'ci'],
+      ['stats.test.chi2', 'chi2'],
+    ].forEach(function (p) {
+      const o = el('option', null, t(p[0]));
+      o.value = p[1];
+      testSel.appendChild(o);
+    });
+    testSel.setAttribute('aria-label', t('stats.test'));
+    testCard.appendChild(testSel);
+
+    const data1 = el('textarea', 'field');
+    data1.value = '5.1, 4.9, 5.0, 5.2, 4.8';
+    data1.setAttribute('aria-label', t('stats.data1'));
+    data1.style.marginTop = '8px';
+    const data2 = el('textarea', 'field');
+    data2.value = '4.1, 4.0, 4.3, 3.9';
+    data2.setAttribute('aria-label', t('stats.data2'));
+    data2.style.marginTop = '8px';
+    const param = el('input', 'field');
+    param.type = 'text';
+    param.value = '5';
+    param.style.marginTop = '8px';
+    testCard.appendChild(el('div', 'label-hint', t('stats.data1')));
+    testCard.appendChild(data1);
+    const data2Label = el('div', 'label-hint', t('stats.data2'));
+    testCard.appendChild(data2Label);
+    testCard.appendChild(data2);
+    testCard.appendChild(param);
+    const testOut = el('div', { cls: 'out', attrs: { role: 'status', 'aria-live': 'polite' } });
+    testCard.appendChild(testOut);
+    const testRow = el('div', 'row');
+    testRow.style.marginTop = '8px';
+    const testBtn = el('button', 'btn primary', t('common.calculate'));
+    testRow.appendChild(testBtn);
+    testCard.appendChild(testRow);
+    testCard.appendChild(el('div', 'hint', t('stats.testsHint')));
+
+    function syncTest() {
+      const kind = testSel.value;
+      const showSecond = kind === 't2' || kind === 'chi2';
+      data2.style.display = showSecond ? '' : 'none';
+      data2Label.style.display = showSecond ? '' : 'none';
+      param.style.display = kind === 't1' || kind === 'ci' ? '' : 'none';
+      if (kind === 't1') {
+        param.setAttribute('aria-label', t('stats.mu0'));
+        param.placeholder = t('stats.mu0');
+        data1.value = data1.value || '5.1, 4.9, 5.0, 5.2, 4.8';
+      } else if (kind === 'ci') {
+        param.setAttribute('aria-label', t('stats.level'));
+        param.placeholder = t('stats.level');
+        if (param.value === '5') {
+          param.value = '0.95';
+        }
+      }
+    }
+    testSel.onchange = syncTest;
+    syncTest();
+
+    testBtn.onclick = function () {
+      testOut.classList.remove('err');
+      try {
+        const kind = testSel.value;
+        const lines = [];
+        if (kind === 't1') {
+          const values = S.parseNumbers(data1.value);
+          const r = S.tTestOne(values, F.toNumber(param.value));
+          lines.push(t('stats.stat.t') + ': ' + F.fmt(r.t, 6));
+          lines.push(t('stats.stat.df') + ': ' + r.df);
+          lines.push(t('stats.stat.p') + ': ' + F.fmt(r.p, 6));
+        } else if (kind === 't2') {
+          const a = S.parseNumbers(data1.value);
+          const b = S.parseNumbers(data2.value);
+          const r = S.tTestTwo(a, b);
+          lines.push(t('stats.stat.t') + ': ' + F.fmt(r.t, 6));
+          lines.push(t('stats.stat.df') + ': ' + F.fmt(r.df, 4));
+          lines.push(t('stats.stat.p') + ': ' + F.fmt(r.p, 6));
+        } else if (kind === 'ci') {
+          const values = S.parseNumbers(data1.value);
+          const r = S.confidenceIntervalMean(values, F.toNumber(param.value));
+          lines.push(t('stats.stat.mean') + ': ' + F.fmt(r.mean, 6));
+          lines.push(t('stats.stat.se') + ': ' + F.fmt(r.se, 6));
+          lines.push(t('stats.stat.ci') + ': [' + F.fmt(r.low, 6) + '; ' + F.fmt(r.high, 6) + ']');
+        } else if (kind === 'chi2') {
+          const obs = S.parseNumbers(data1.value);
+          const exp = S.parseNumbers(data2.value);
+          const r = S.chiSquareGoodness(obs, exp);
+          lines.push(t('stats.stat.chi2') + ': ' + F.fmt(r.chi2, 6));
+          lines.push(t('stats.stat.df') + ': ' + r.df);
+          lines.push(t('stats.stat.p') + ': ' + (r.p === null ? '—' : F.fmt(r.p, 6)));
+        }
+        testOut.textContent = lines.join('\n');
+      } catch (e) {
+        testOut.textContent = e.message || String(e);
+        testOut.classList.add('err');
+      }
+    };
+    page.appendChild(testCard);
   }
 
   window.CW.pages.mountStats = mountStats;

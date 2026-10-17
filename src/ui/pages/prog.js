@@ -13,6 +13,7 @@ window.CW.pages = window.CW.pages || {};
   const el = window.CW.pages._helpers.el;
   const t = window.CW.i18n.t;
   const U = window.CW.i18n.unit;
+  const P = window.CW.prog;
   // ── Программирование / данные ────────────────────────────
 
   /** Перевод из строки в base N в десятичное. */
@@ -144,6 +145,70 @@ window.CW.pages = window.CW.pages || {};
       function (v) {
         const cidr = parseInt(String(v.m).replace(/^\/+/, ''), 10);
         return ['mask', ipToString(cidrToMask(cidr)), ''];
+      },
+    ],
+    [
+      t('prog.fn.ieee754'),
+      ['hex', 'x'],
+      function (v) {
+        return ['hex', P.ieee754(F.toNumber(v.x)).hex, ''];
+      },
+    ],
+    [
+      t('prog.fn.ieeeBits'),
+      ['bits', 'x'],
+      function (v) {
+        return ['bits', P.ieee754(F.toNumber(v.x)).bits, ''];
+      },
+    ],
+    [
+      t('prog.fn.base64enc'),
+      ['b64', 's'],
+      function (v) {
+        return ['b64', P.base64Encode(v.s || ''), ''];
+      },
+    ],
+    [
+      t('prog.fn.base64dec'),
+      ['s', 'b64'],
+      function (v) {
+        return ['s', P.base64Decode(v.b64 || ''), ''];
+      },
+    ],
+    [
+      t('prog.fn.urlenc'),
+      ['enc', 's'],
+      function (v) {
+        return ['enc', encodeURIComponent(v.s || ''), ''];
+      },
+    ],
+    [
+      t('prog.fn.urldec'),
+      ['dec', 's'],
+      function (v) {
+        return ['dec', decodeURIComponent(v.s || ''), ''];
+      },
+    ],
+    [
+      t('prog.fn.crc32'),
+      ['crc', 's'],
+      function (v) {
+        return ['crc', P.crc32(v.s || ''), ''];
+      },
+    ],
+    [
+      t('prog.fn.chars'),
+      ['codes', 's'],
+      function (v) {
+        return [
+          'codes',
+          P.charCodes(v.s || '')
+            .map(function (c) {
+              return c.hex + ' ' + c.char;
+            })
+            .join('  '),
+          '',
+        ];
       },
     ],
   ];

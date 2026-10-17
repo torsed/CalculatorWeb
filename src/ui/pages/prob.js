@@ -213,6 +213,171 @@ window.CW.pages = window.CW.pages || {};
     const hint = el('div', 'hint', t('prob.hint'));
     card.appendChild(hint);
     page.appendChild(card);
+
+    // ── Распределения с квантилями ──────────────────────────
+    const PD = window.CW.probdist;
+    if (PD && PD.DISTS) {
+      const dcard = el('div', 'dist-card');
+      dcard.appendChild(el('h2', null, t('prob.distsTitle')));
+
+      const dsel = el('select', 'field');
+      PD.DISTS.forEach(function (d, i) {
+        const o = el('option', null, t('prob.dist.' + d.id));
+        o.value = String(i);
+        dsel.appendChild(o);
+      });
+      dsel.setAttribute('aria-label', t('prob.distOf'));
+      dcard.appendChild(dsel);
+
+      const SYM = {
+        mu: 'μ',
+        sigma: 'σ',
+        lambda: 'λ',
+        v: 'ν',
+        k: 'k',
+        n: 'n',
+        p: 'p',
+        a: 'a',
+        b: 'b',
+        N: 'N',
+        K: 'K',
+        d1: 'd₁',
+        d2: 'd₂',
+      };
+
+      const prmRow = el('div', 'row');
+      prmRow.style.marginTop = '8px';
+      const prmInputs = [];
+      for (let i = 0; i < 3; i++) {
+        const f = el('input', 'field');
+        f.type = 'text';
+        f.inputMode = 'decimal';
+        f.setAttribute('aria-label', t('prob.param', { name: String(i + 1) }));
+        prmRow.appendChild(f);
+        prmInputs.push(f);
+      }
+      dcard.appendChild(prmRow);
+
+      const modeRow = el('div', 'row');
+      modeRow.style.marginTop = '8px';
+      const msel = el('select', 'field');
+      [
+        ['prob.mode.pdf', 'pdf'],
+        ['prob.mode.cdf', 'cdf'],
+        ['prob.mode.quantile', 'quantile'],
+      ].forEach(function (p) {
+        const o = el('option', null, t(p[0]));
+        o.value = p[1];
+        msel.appendChild(o);
+      });
+      msel.setAttribute('aria-label', t('prob.mode'));
+      modeRow.appendChild(msel);
+      const xf = el('input', 'field');
+      xf.type = 'text';
+      xf.inputMode = 'decimal';
+      xf.value = '1';
+      xf.setAttribute('aria-label', t('prob.value'));
+      xf.placeholder = t('prob.value');
+      modeRow.appendChild(xf);
+      dcard.appendChild(modeRow);
+
+      const dOut = el('div', { cls: 'out', attrs: { role: 'status', 'aria-live': 'polite' } });
+      dcard.appendChild(dOut);
+
+      const DEFAULTS = {
+        normal: ['0', '1'],
+        studentT: ['10'],
+        chi2: ['3'],
+        fisherF: ['3', '10'],
+        exponential: ['1'],
+        uniform: ['0', '1'],
+        binomial: ['10', '0.5'],
+        poisson: ['3'],
+        geometric: ['0.3'],
+        hypergeometric: ['50', '10', '5'],
+      };
+
+      function refreshDist() {
+        const d = PD.DISTS[parseInt(dsel.value, 10)];
+        prmInputs.forEach(function (f, i) {
+          if (i < d.params.length) {
+            f.style.display = '';
+            const name = d.params[i];
+            f.placeholder = SYM[name] || name;
+            f.setAttribute('aria-label', SYM[name] || name);
+            const defs = DEFAULTS[d.id] || [];
+            f.value = defs[i] !== undefined ? defs[i] : '';
+          } else {
+            f.style.display = 'none';
+            f.value = '';
+          }
+        });
+        const q = msel.value === 'quantile';
+        xf.placeholder = q ? t('prob.probability') : t('prob.value');
+        xf.setAttribute('aria-label', q ? t('prob.probability') : t('prob.value'));
+        if (q) {
+          xf.value = '0.95';
+        }
+      }
+      dsel.onchange = refreshDist;
+      msel.onchange = refreshDist;
+      refreshDist();
+
+      const dbtn = el('button', 'btn primary', t('common.calculate'));
+      dbtn.onclick = function () {
+        dOut.classList.remove('err');
+        try {
+          const d = PD.DISTS[parseInt(dsel.value, 10)];
+          const params = d.params.map(function (_, i) {
+            return F.toNumber(prmInputs[i].value);
+          });
+          if (
+            params.some(function (v) {
+              return !Number.isFinite(v);
+            })
+          ) {
+            throw { message: t('prob.err.undefined') };
+          }
+          const x = F.toNumber(xf.value);
+          if (!Number.isFinite(x)) {
+            throw { message: t('prob.err.undefined') };
+          }
+          const mode = msel.value;
+          let value;
+          if (mode === 'pdf') {
+            value = d.pdf.apply(null, [x].concat(params));
+          } else if (mode === 'cdf') {
+            value = d.cdf.apply(null, [x].concat(params));
+          } else {
+            value = d.inv.apply(null, [x].concat(params));
+          }
+          const mean = d.mean.apply(null, params);
+          const variance = d.variance.apply(null, params);
+          const lines = [];
+          const label =
+            mode === 'pdf'
+              ? 'f(' + F.fmt(x) + ')'
+              : mode === 'cdf'
+                ? 'F(' + F.fmt(x) + ')'
+                : 'x(p=' + F.fmt(x) + ')';
+          lines.push(label + ' = ' + F.fmt(value, 10));
+          lines.push(t('prob.stat.mean') + ': ' + (Number.isFinite(mean) ? F.fmt(mean, 6) : '—'));
+          lines.push(
+            t('prob.stat.variance') + ': ' + (Number.isFinite(variance) ? F.fmt(variance, 6) : '—')
+          );
+          dOut.textContent = lines.join('\n');
+        } catch (e) {
+          dOut.textContent = e.message || String(e);
+          dOut.classList.add('err');
+        }
+      };
+      const drow = el('div', 'row');
+      drow.style.marginTop = '8px';
+      drow.appendChild(dbtn);
+      dcard.appendChild(drow);
+      dcard.appendChild(el('div', 'hint', t('prob.distsHint')));
+      page.appendChild(dcard);
+    }
   }
 
   window.CW.pages.mountProb = mountProb;

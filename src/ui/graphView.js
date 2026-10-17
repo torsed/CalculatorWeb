@@ -29,6 +29,9 @@ window.CW.graph = (function () {
     this.ymin = -5;
     this.ymax = 5;
     this.hover = null;
+    // Область параметра для полярных и параметрических кривых (θ или t).
+    this.tmin = 0;
+    this.tmax = Math.PI * 2;
     this._bind();
   }
 
@@ -253,6 +256,53 @@ window.CW.graph = (function () {
     };
   };
 
+  /** Точка кривой в мировых координатах для параметра p.
+   *
+   * Режимы: 'y' — y = f(x), p играет роль x; 'polar' — r = f(θ),
+   * p играет роль θ; 'param' — x = f(t), y = g(t), p играет роль t.
+   * Возвращает null, если точка не определена (разрыв/комплекс).
+   */
+  GraphView.prototype._curve = function (fn, p) {
+    let wx;
+    let wy;
+    try {
+      if ((fn.mode || 'y') === 'polar') {
+        const r = this._sampleFn(fn, p);
+        if (!Number.isFinite(r)) {
+          return null;
+        }
+        wx = r * Math.cos(p);
+        wy = r * Math.sin(p);
+      } else if ((fn.mode || 'y') === 'param') {
+        const x = this._sampleFn(fn, p);
+        let yy;
+        try {
+          yy = fn.g ? fn.g(p) : NaN;
+        } catch (e) {
+          yy = NaN;
+        }
+        if (typeof yy === 'object' && yy !== null) {
+          yy = yy.re;
+        }
+        if (!Number.isFinite(x) || !(typeof yy === 'number' && Number.isFinite(yy))) {
+          return null;
+        }
+        wx = x;
+        wy = yy;
+      } else {
+        const y = this._sampleFn(fn, p);
+        if (!Number.isFinite(y)) {
+          return null;
+        }
+        wx = p;
+        wy = y;
+      }
+    } catch (e) {
+      return null;
+    }
+    return { x: wx, y: wy };
+  };
+
   GraphView.prototype.render = function () {
     const ctx = this.ctx;
     const dim = this._resize();
@@ -355,38 +405,35 @@ window.CW.graph = (function () {
       if (fn.show === false) {
         return;
       }
+      const mode = fn.mode || 'y';
       ctx.strokeStyle = fn.color;
       ctx.lineWidth = 2;
       ctx.beginPath();
       let started = false;
       let prevY = null;
       for (let i = 0; i <= SAMPLES; i++) {
-        // Use log-spaced samples for log scale
-        let wx;
-        if (self.logX) {
-          const logMin = Math.log10(self.xmin);
-          const logMax = Math.log10(self.xmax);
-          wx = Math.pow(10, logMin + (i / SAMPLES) * (logMax - logMin));
+        // y-режим параметризуется по X (в т.ч. лог-шкала), полярный и
+        // параметрический — по области θ/t.
+        let p;
+        if (mode === 'y') {
+          if (self.logX) {
+            const logMin = Math.log10(self.xmin);
+            const logMax = Math.log10(self.xmax);
+            p = Math.pow(10, logMin + (i / SAMPLES) * (logMax - logMin));
+          } else {
+            p = self.xmin + (i / SAMPLES) * (self.xmax - self.xmin);
+          }
         } else {
-          wx = self.xmin + (i / SAMPLES) * (self.xmax - self.xmin);
+          p = self.tmin + (i / SAMPLES) * (self.tmax - self.tmin);
         }
-        let vy;
-        try {
-          vy = fn.f(wx);
-        } catch (e) {
-          vy = NaN;
-        }
-        if (typeof vy === 'object' && vy !== null) {
-          vy = vy.re;
-        }
-        if (typeof vy !== 'number' || !Number.isFinite(vy)) {
-          // Разрыв domain: новый сегмент, иначе рисуем вертикальную черту.
+        const pt = self._curve(fn, p);
+        if (!pt) {
           started = false;
           prevY = null;
           continue;
         }
-        const qx = self._toPxX(wx);
-        const qy = self._toPxY(vy);
+        const qx = self._toPxX(pt.x);
+        const qy = self._toPxY(pt.y);
         // Защита от вертикальных скачков вроде 1/x около нуля.
         if (prevY !== null && Math.abs(qy - prevY) > h * 2) {
           started = false;
@@ -416,7 +463,7 @@ window.CW.graph = (function () {
     const self = this;
     let best = null;
     this.functions.forEach(function (fn) {
-      if (fn.show === false) {
+      if (fn.show === false || (fn.mode || 'y') !== 'y') {
         return;
       }
       let vy;
@@ -490,7 +537,7 @@ window.CW.graph = (function () {
     let lo = Infinity;
     let hi = -Infinity;
     this.functions.forEach(function (fn) {
-      if (fn.show === false) {
+      if (fn.show === false || (fn.mode || 'y') !== 'y') {
         return;
       }
       for (let i = 0; i <= N; i++) {
@@ -525,7 +572,7 @@ window.CW.graph = (function () {
     rows = rows || 40;
     const self = this;
     const fns = this.functions.filter(function (f) {
-      return f.show !== false;
+      return f.show !== false && (f.mode || 'y') === 'y';
     });
     const data = [];
     for (let i = 0; i <= rows; i++) {
@@ -636,27 +683,25 @@ window.CW.graph = (function () {
         if (fn.show === false) {
           continue;
         }
+        const mode = fn.mode || 'y';
         let path = '';
         let started = false;
         let prevY = null;
         for (let i = 0; i <= SAMPLES; i++) {
-          const wx = this.xmin + (i / SAMPLES) * (this.xmax - this.xmin);
-          let vy;
-          try {
-            vy = fn.f(wx);
-          } catch (e) {
-            vy = NaN;
+          let p;
+          if (mode === 'y') {
+            p = this.xmin + (i / SAMPLES) * (this.xmax - this.xmin);
+          } else {
+            p = this.tmin + (i / SAMPLES) * (this.tmax - this.tmin);
           }
-          if (typeof vy === 'object' && vy !== null) {
-            vy = vy.re;
-          }
-          if (typeof vy !== 'number' || !Number.isFinite(vy)) {
+          const pt = this._curve(fn, p);
+          if (!pt) {
             started = false;
             prevY = null;
             continue;
           }
-          const qx = this._toPxX(wx);
-          const qy = this._toPxY(vy);
+          const qx = this._toPxX(pt.x);
+          const qy = this._toPxY(pt.y);
           if (prevY !== null && Math.abs(qy - prevY) > h * 2) {
             started = false;
           }
@@ -694,7 +739,7 @@ window.CW.graph = (function () {
   GraphView.prototype.findIntersections = function () {
     const intersections = [];
     const visibleFns = this.functions.filter(function (fn) {
-      return fn.show !== false;
+      return fn.show !== false && (fn.mode || 'y') === 'y';
     });
     const EPS = 1e-6;
 

@@ -8,7 +8,10 @@
 ## Структура
 
 - `src/core/` — чистая математика без DOM: `parser.js`, `format.js`,
-  `matrix.js`, `numtheory.js`, `stats.js`, `solver.js`, `polynomial.js`
+  `matrix.js`, `numtheory.js`, `stats.js`, `solver.js`, `polynomial.js`,
+  `analysis.js` (производные/интегралы/пределы), `datetime.js` (календарь),
+  `probdist.js` (распределения и квантили), `prog.js` (IEEE-754, Base64, CRC32),
+  `linsystem.js` (линейные системы)
 - `src/state/history.js` — история в localStorage
 - `src/i18n/` — интернационализация: `i18n.js` (ядро `t`/`tn`) и
   `locales/*.js` — каталоги строк ru/en (по одному на область). Язык по
@@ -16,8 +19,8 @@
 - `src/ui/` — `calcState.js`, `calcView.js`, `graphView.js`, `app.js`,
   `bootstrap.js` (старт приложения), `sw-register.js` (регистрация SW)
 - `src/ui/pages/` — вкладки, по файлу на тему:
-  `conv`, `stats`, `matrix`, `numtheory`, `solver`, `phys`, `chem`, `geom`,
-  `finance`, `util`, `prob`, `prog`, `gen`
+  `conv`, `stats`, `matrix`, `numtheory`, `solver`, `analysis`, `phys`, `chem`,
+  `geom`, `finance`, `util`, `date`, `prob`, `prog`, `gen`
   (+ `helpers.js` — общие `F`/`el`, единый источник вместо копий)
 - `src/core/polynomial.js` — свой движок полиномов: извлечение коэффициентов
   из выражения и корни любой степени (Durand–Kerner). Заменяет mathjs,
@@ -32,9 +35,10 @@
 ## Команды
 
 ```bash
-npm test          # smoke + векторы парсера + балансировщик (быстро, без браузера)
-npm run test:e2e  # Playwright, ~57 тестов в реальном Chromium (функционал + axe)
+npm test          # smoke + векторы парсера + балансировщик + расширения ядра (без браузера)
+npm run test:e2e  # Playwright, 58 тестов в реальном Chromium (функционал + axe)
 npm run test:coverage  # покрытие ядра и состояния через c8 (npm run test:coverage)
+npm run test:core # только расширения ядра (tests/core_ext.test.js)
 npm run typecheck # tsc --checkJs по src/**/*.js (см. tsconfig.json, types/)
 npm run lint      # ESLint, должен быть чистым
 npm run format:check  # Prettier
@@ -45,6 +49,8 @@ npm run format:check  # Prettier
 - `tests/smoke.js` — загрузка всех скриптов + базовые проверки ядра
 - `tests/run_vectors.js` + `tests/vectors.json` — сверка парсера с эталоном (348 векторов)
 - `tests/chem_balance.test.js` — балансировщик уравнений из `pages/chem.js`
+- `tests/core_ext.test.js` — анализ, даты, распределения, программирование,
+  линейные системы, расширения матриц/чисел/статистики, избранное в истории
 - `tests/e2e/` — Playwright: клики, клавиатура, вкладки, история,
   открытие по `file://`, PNG-экспорт, `a11y.spec.js` — axe-core
   по всем вкладкам (WCAG 2.2 A/AA, ноль нарушений);
