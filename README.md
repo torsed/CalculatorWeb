@@ -1,9 +1,14 @@
 # CalculatorWeb
 
+[![CI](https://github.com/torsed/CalculatorWeb/actions/workflows/ci.yml/badge.svg)](https://github.com/torsed/CalculatorWeb/actions/workflows/ci.yml)
+[![Demo](https://img.shields.io/badge/demo-GitHub%20Pages-2ea44f)](https://torsed.github.io/CalculatorWeb/)
+
 Научный калькулятор на чистом vanilla JS. Открывается как обычный файл —
 сборщик не нужен: `index.html` грузит скрипты обычными `<script>`
 (ES-модули по `file://` не работают, поэтому их нет — см. комментарий
 в `index.html`).
+
+Демо онлайн: **https://torsed.github.io/CalculatorWeb/** (PWA, работает офлайн).
 
 ## Структура
 
