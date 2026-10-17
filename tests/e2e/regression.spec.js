@@ -221,10 +221,34 @@ test.describe('Regressions and new features', () => {
     await expect(page.locator('#tab-matrix')).toHaveAttribute('aria-selected', 'true');
   });
 
-  test('converter: currency shows offline approximation hint', async ({ page }) => {
+  test('converter: currency shows offline approximation hint when API is unreachable', async ({
+    page,
+  }) => {
+    await page.route('**/open.er-api.com/**', route => route.abort());
     await page.click('button.tab:has-text("Конвертер")');
     await page.locator('#conv-cat').selectOption({ label: 'Валюты' });
     await expect(page.locator('#conv-live-hint')).toContainText('приблизительные');
+  });
+
+  test('converter: live rates response switches hint to online mode', async ({ page }) => {
+    await page.route('**/open.er-api.com/**', route =>
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          result: 'success',
+          base_code: 'USD',
+          rates: { USD: 1, EUR: 0.9, RUB: 90 },
+        }),
+      })
+    );
+    await page.click('button.tab:has-text("Конвертер")');
+    await page.locator('#conv-cat').selectOption({ label: 'Валюты' });
+    await page.locator('#conv-from').selectOption('USD');
+    await page.locator('#conv-to').selectOption('EUR');
+    await expect(page.locator('#conv-live-hint')).toContainText('из сети');
+    // 1 USD = 0.9 EUR по замоканному курсу.
+    await expect(page.locator('#page-conv .out')).toContainText('0.9 EUR');
   });
 
   test('graph: value table renders a text alternative', async ({ page }) => {

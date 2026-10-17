@@ -115,7 +115,7 @@ self.addEventListener('message', e => {
 self.addEventListener('fetch', e => {
   // OWASP / PWA best practice: only cache same-origin assets + allowed external APIs
   const url = new URL(e.request.url);
-  const allowedExternal = ['api.exchangerate.host'];
+  const allowedExternal = ['open.er-api.com'];
   const isSameOrigin = url.origin === self.location.origin;
   const isAllowedExternal = allowedExternal.some(host => url.hostname === host);
   if (!isSameOrigin && !isAllowedExternal) {

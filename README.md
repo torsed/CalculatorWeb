@@ -40,8 +40,8 @@
 ## Команды
 
 ```bash
-npm test          # smoke + векторы парсера + балансировщик + расширения ядра (без браузера)
-npm run test:e2e  # Playwright, 58 тестов в реальном Chromium (функционал + axe)
+npm run test          # smoke + векторы парсера + балансировщик + расширения ядра + solver/analysis/prog/linsystem (без браузера)
+npm run test:e2e  # Playwright, 62 теста в реальном Chromium (функционал + axe)
 npm run test:coverage  # покрытие ядра и состояния через c8 (npm run test:coverage)
 npm run test:core # только расширения ядра (tests/core_ext.test.js)
 npm run typecheck # tsc --checkJs по src/**/*.js (см. tsconfig.json, types/)
@@ -56,6 +56,8 @@ npm run format:check  # Prettier
 - `tests/chem_balance.test.js` — балансировщик уравнений из `pages/chem.js`
 - `tests/core_ext.test.js` — анализ, даты, распределения, программирование,
   линейные системы, расширения матриц/чисел/статистики, избранное в истории
+- `tests/core_deep.test.js` — глубокие проверки solver, analysis, prog,
+  linsystem: коды ошибок, односторонние пределы, UTF-8, IEEE-754
 - `tests/e2e/` — Playwright: клики, клавиатура, вкладки, история,
   открытие по `file://`, PNG-экспорт, `a11y.spec.js` — axe-core
   по всем вкладкам (WCAG 2.2 A/AA, ноль нарушений);

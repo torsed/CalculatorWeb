@@ -101,4 +101,12 @@ CASES.forEach(function (c) {
 });
 
 console.log('\n' + pass + ' passed, ' + fail + ' failed');
-process.exit(fail ? 1 : 0);
+// При прямом запуске (npm test) — код выхода по числу провалов. При require
+// из точек входа вроде coverage.js выходить нельзя: процесс оборвался бы,
+// и все тесты после этого файла никогда не попали бы в отчёт c8.
+if (require.main === module) {
+  process.exit(fail ? 1 : 0);
+}
+if (fail) {
+  throw new Error('chem_balance: ' + fail + ' уравнения не сбалансировались');
+}

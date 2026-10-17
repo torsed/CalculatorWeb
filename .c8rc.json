@@ -3,5 +3,9 @@
   "include": ["src/core/**/*.js", "src/state/**/*.js"],
   "reporter": ["text", "lcov"],
   "report-dir": "coverage",
-  "check-coverage": false
+  "check-coverage": true,
+  "statements": 78,
+  "branches": 74,
+  "functions": 70,
+  "lines": 78
 }

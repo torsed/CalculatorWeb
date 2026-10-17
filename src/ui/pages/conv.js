@@ -345,12 +345,15 @@ window.CW.pages = window.CW.pages || {};
         if (typeof fetch !== 'function') {
           return;
         }
-        const resp = await fetch('https://api.exchangerate.host/latest?base=USD');
+        // open.er-api.com — бесплатный, без ключа, CORS «*», есть RUB/BYN/KZT/UAH.
+        // (api.exchangerate.host с 2024 требует access_key и здесь не работал.)
+        const resp = await fetch('https://open.er-api.com/v6/latest/USD');
         if (!resp || !resp.ok) {
           return;
         }
         const data = await resp.json();
-        if (data.rates) {
+        // er-api отдаёт 200 даже при ошибке: отличаем по data.result.
+        if (data && data.result === 'success' && data.rates) {
           currencyRates = { base: 'USD', rates: data.rates };
           currencyRates.rates.USD = 1;
           currencyLastFetch = now;
